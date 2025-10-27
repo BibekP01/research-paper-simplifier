@@ -1,0 +1,16 @@
+# ArXiv API settings
+arxiv:
+  max_results: 10
+  categories: ["cs.AI", "cs.CL", "cs.LG"]
+
+# Model settings
+models:
+  simplifier: "facebook/bart-large-cnn"
+  scientific_model: "allenai/scibert_scivocab_uncased"
+  sentence_transformer: "sentence-transformers/all-MiniLM-L6-v2"
+
+# Processing settings
+processing:
+  max_length: 1024
+  min_length: 100
+  chunk_size: 512
