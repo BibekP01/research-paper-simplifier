@@ -205,3 +205,34 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# ============================================
+# Project-Specific: Research Paper Q&A
+# ============================================
+
+# Environment variables (already covered above, but being explicit)
+.env.local
+
+# Data files - keep structure but not content
+data/papers/*.pdf
+data/papers/**/*.pdf
+data/processed/*
+!data/processed/.gitkeep
+data/vectorstore/*
+!data/vectorstore/.gitkeep
+
+# Model cache
+models/*
+!models/.gitkeep
+
+# Outputs
+outputs/*
+!outputs/.gitkeep
+
+# Mac specific
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp

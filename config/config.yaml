@@ -1,16 +1,31 @@
+# Update config file
+cat > config/config.yaml << 'EOF'
 # ArXiv API settings
 arxiv:
   max_results: 10
   categories: ["cs.AI", "cs.CL", "cs.LG"]
 
-# Model settings
-models:
-  simplifier: "facebook/bart-large-cnn"
-  scientific_model: "allenai/scibert_scivocab_uncased"
-  sentence_transformer: "sentence-transformers/all-MiniLM-L6-v2"
+# Gemini API settings
+gemini:
+  model: "gemini-1.5-flash"  # Fast and free tier available
+  temperature: 0.3
+  max_output_tokens: 2048
+
+# Embedding settings
+embeddings:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  chunk_size: 512
+  chunk_overlap: 50
+
+# Vector store settings
+vectorstore:
+  type: "faiss"  # or "chroma"
+  similarity_metric: "cosine"
+  top_k: 5  # Number of relevant chunks to retrieve
 
 # Processing settings
 processing:
-  max_length: 1024
-  min_length: 100
-  chunk_size: 512
+  max_paper_length: 50000  # characters
+  min_chunk_size: 100
+  remove_references: true
+EOF
