@@ -1,5 +1,3 @@
-# Open requirements.txt and replace content
-cat > requirements.txt << 'EOF'
 # Core NLP
 transformers>=4.30.0
 sentence-transformers>=2.2.0
@@ -29,4 +27,3 @@ streamlit>=1.25.0
 PyYAML>=6.0
 tqdm>=4.65.0
 python-dotenv>=1.0.0
-EOF
