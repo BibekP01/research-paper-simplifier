@@ -30,47 +30,72 @@ class GeminiClient:
     Handles API communication, prompt formatting, and response processing.
     """
     
-    def __init__(
-        self, 
-        api_key: Optional[str] = None, 
-        model_name: str = "gemini-1.5-flash",
-        temperature: float = 0.3,
-        max_tokens: int = 2048,
-        config_path: str = "../config/config.yaml"
-    ) -> None:
+    def __init__(self, config_path: str = '../config/config.yaml', model_name: str = None,
+                 temperature: float = None, max_tokens: int = None):
         """
-        Initialize the Gemini client.
+        Initialize the Gemini client with configuration.
         
         Args:
-            api_key: Optional API key. If not provided, will try to load from .env
-            model_name: Name of the Gemini model to use
-            temperature: Controls randomness (0.0 to 1.0)
-            max_tokens: Maximum number of tokens to generate
             config_path: Path to the config file
+            model_name: Optional override for the model name
+            temperature: Optional override for temperature (0.0 to 1.0)
+            max_tokens: Optional override for max tokens in response
+            
+        Raises:
+            ValueError: If required environment variables are missing
+            RuntimeError: If model initialization fails
         """
         self.config = self._load_config(config_path)
-        # Use the correct model name that we verified works
-        self.model_name = 'gemini-2.5-flash'  # Override with the working model
-        self.temperature = temperature or self.config.get('gemini', {}).get('temperature', 0.3)
-        self.max_tokens = max_tokens or self.config.get('gemini', {}).get('max_output_tokens', 2048)
         
-        # Load API key from .env.test for testing
-        load_dotenv('.env.test')  # Try loading from test env file first
-        self.api_key = api_key or os.getenv('GEMINI_API_KEY')
-        if not self.api_key:
-            load_dotenv()  # Fall back to .env if .env.test doesn't exist
-            self.api_key = os.getenv('GEMINI_API_KEY')
-            
+        # Load configuration with environment variable overrides
+        self.model_name = (
+            model_name or 
+            os.getenv('GEMINI_MODEL') or 
+            self.config.get('gemini', {}).get('model', 'gemini-2.5-flash')
+        )
+        self.temperature = float(
+            temperature or 
+            os.getenv('GEMINI_TEMPERATURE') or 
+            self.config.get('gemini', {}).get('temperature', 0.3)
+        )
+        self.max_tokens = int(
+            max_tokens or 
+            os.getenv('GEMINI_MAX_TOKENS') or 
+            self.config.get('gemini', {}).get('max_output_tokens', 2048)
+        )
+        
+        # Load API key from environment variables
+        self.api_key = os.getenv('GEMINI_API_KEY')
         if not self.api_key:
             raise ValueError(
-                "API key not provided. Set GEMINI_API_KEY in .env file or pass as argument"
+                "GEMINI_API_KEY environment variable not found.\n"
+                "Please follow these steps to set it up:\n"
+                "1. Create a .env file in the project root\n"
+                "2. Add your API key: GEMINI_API_KEY=your-api-key-here\n"
+                "3. You can copy .env.example to .env as a starting point\n"
+                "4. Never commit your .env file to version control"
             )
             
-        # Configure the Gemini API
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel(self.model_name)
-        
-        logger.info(f"Initialized GeminiClient with model: {self.model_name}")
+        # Configure the Gemini API with error handling
+        try:
+            genai.configure(api_key=self.api_key)
+            # Initialize the model with validation
+            self.model = genai.GenerativeModel(self.model_name)
+            logger.info(f"Initialized GeminiClient with model: {self.model_name}")
+            
+            # Test the API key by making a simple request
+            if not self.validate_api_key():
+                raise RuntimeError(
+                    f"Failed to validate API key with model {self.model_name}. "
+                    "Please check your API key and model name."
+                )
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize Gemini client: {e}")
+            raise RuntimeError(
+                f"Failed to initialize Gemini client: {e}. "
+                "Please check your API key and network connection."
+            ) from e
     
     @staticmethod
     def _load_config(config_path: str) -> Dict[str, Any]:
@@ -91,15 +116,33 @@ class GeminiClient:
         
         Returns:
             bool: True if the API key is valid, False otherwise
+            
+        Note:
+            This makes an actual API call to validate the key and model.
+            It will be called automatically during initialization.
         """
         try:
-            # Test if we can list models and find our target model
+            # Test if we can list models (validates the API key)
             models = list(genai.list_models())
-            model_names = [model.name for model in models]
-            if self.model_name not in model_names and f'models/{self.model_name}' not in model_names:
-                logger.warning(f"Model {self.model_name} not found in available models")
+            if not models:
+                logger.error("No models found - API key may be invalid")
                 return False
+                
+            # Check if our target model is available
+            model_names = [model.name for model in models]
+            model_found = (self.model_name in model_names or 
+                         f'models/{self.model_name}' in model_names or
+                         any(self.model_name in name for name in model_names))
+            
+            if not model_found:
+                logger.warning(
+                    f"Model '{self.model_name}' not found in available models. "
+                    f"Available models: {', '.join(model_names[:5])}..."
+                )
+                return False
+                
             return True
+            
         except Exception as e:
             logger.error(f"API key validation failed: {e}")
             return False
