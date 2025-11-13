@@ -64,38 +64,30 @@ class GeminiClient:
             self.config.get('gemini', {}).get('max_output_tokens', 2048)
         )
         
-        # Load API key from environment variables
-        self.api_key = os.getenv('GEMINI_API_KEY')
+        # Load API key from environment variables (try both GEMINI_API_KEY and GOOGLE_API_KEY for compatibility)
+        self.api_key = os.getenv('GEMINI_API_KEY') or os.getenv('GOOGLE_API_KEY')
         if not self.api_key:
             raise ValueError(
-                "GEMINI_API_KEY environment variable not found.\n"
+                "Neither GEMINI_API_KEY nor GOOGLE_API_KEY environment variables found.\n"
                 "Please follow these steps to set it up:\n"
                 "1. Create a .env file in the project root\n"
-                "2. Add your API key: GEMINI_API_KEY=your-api-key-here\n"
+                "2. Add your API key: GOOGLE_API_KEY=your-api-key-here\n"
                 "3. You can copy .env.example to .env as a starting point\n"
                 "4. Never commit your .env file to version control"
             )
             
-        # Configure the Gemini API with error handling
-        try:
-            genai.configure(api_key=self.api_key)
-            # Initialize the model with validation
-            self.model = genai.GenerativeModel(self.model_name)
-            logger.info(f"Initialized GeminiClient with model: {self.model_name}")
-            
-            # Test the API key by making a simple request
-            if not self.validate_api_key():
-                raise RuntimeError(
-                    f"Failed to validate API key with model {self.model_name}. "
-                    "Please check your API key and model name."
-                )
-                
-        except Exception as e:
-            logger.error(f"Failed to initialize Gemini client: {e}")
+        # Configure the API key
+        genai.configure(api_key=self.api_key)
+        # Initialize the model with validation
+        self.model = genai.GenerativeModel(self.model_name)
+        logger.info(f"Initialized GeminiClient with model: {self.model_name}")
+        
+        # Test the API key by making a simple request
+        if not self.validate_api_key():
             raise RuntimeError(
-                f"Failed to initialize Gemini client: {e}. "
-                "Please check your API key and network connection."
-            ) from e
+                f"Failed to validate API key with model {self.model_name}. "
+                "Please check your API key and model name."
+            )
     
     @staticmethod
     def _load_config(config_path: str) -> Dict[str, Any]:

@@ -1,28 +1,22 @@
-# ArXiv API settings
 arxiv:
+  categories:
+  - cs.AI
+  - cs.CL
+  - cs.LG
   max_results: 10
-  categories: ["cs.AI", "cs.CL", "cs.LG"]
-
-# Gemini API settings
-gemini:
-  model: "gemini-1.5-flash"  # Fast and free tier available
-  temperature: 0.3
-  max_output_tokens: 2048
-
-# Embedding settings
 embeddings:
-  model: "sentence-transformers/all-MiniLM-L6-v2"
-  chunk_size: 512
   chunk_overlap: 50
-
-# Vector store settings
-vectorstore:
-  type: "faiss"  # or "chroma"
-  similarity_metric: "cosine"
-  top_k: 5  # Number of relevant chunks to retrieve
-
-# Processing settings
+  chunk_size: 512
+  model: sentence-transformers/all-MiniLM-L6-v2
+gemini:
+  max_output_tokens: 2048
+  model: gemini-2.5-flash
+  temperature: 0.3
 processing:
-  max_paper_length: 50000  # characters
+  max_paper_length: 50000
   min_chunk_size: 100
   remove_references: true
+vectorstore:
+  similarity_metric: cosine
+  top_k: 5
+  type: faiss
