@@ -8,8 +8,8 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 from pathlib import Path
 
-from retriever import VectorStoreRetriever
-from gemini_client import GeminiClient
+from .retriever import VectorStoreRetriever
+from .gemini_client import GeminiClient
 
 # Configure logging
 logging.basicConfig(
