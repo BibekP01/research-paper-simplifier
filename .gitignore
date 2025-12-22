@@ -215,12 +215,13 @@ __marimo__/
 .env.local
 
 # Data files - keep structure but not content
-data/papers/*.pdf
-data/papers/**/*.pdf
-data/processed/*
-!data/processed/.gitkeep
-data/vectorstore/*
-!data/vectorstore/.gitkeep
+# Data files - keep structure but not content
+backend/data/papers/*.pdf
+backend/data/papers/**/*.pdf
+backend/data/processed/*
+!backend/data/processed/.gitkeep
+backend/data/vectorstore/*
+!backend/data/vectorstore/.gitkeep
 
 # Model cache
 models/*

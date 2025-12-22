@@ -41,6 +41,9 @@ class VectorStoreRetriever:
             index_path: Path to a pre-built FAISS index. If provided, loads the index.
             config_path: Path to config file. Defaults to '../config/config.yaml'.
         """
+        if config_path is None:
+            config_path = str(Path(__file__).parent.parent / "config" / "config.yaml")
+            
         self.config = self._load_config(config_path)
         self.model_name = model_name or self.config['embeddings']['model']
         self.top_k = self.config['vectorstore'].get('top_k', 5)

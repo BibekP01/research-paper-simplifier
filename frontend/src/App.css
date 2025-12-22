@@ -1,0 +1,321 @@
+/* Research Paper Q&A - Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ===== Design Tokens ===== */
+:root {
+    /* Background Colors */
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+
+    /* Accent Colors */
+    --accent-blue: #015CE6;
+    --accent-blue-light: #0071E3;
+    --accent-purple: #6C31CC;
+
+    /* Text Colors */
+    --text-primary: #F1F1F1;
+    --text-secondary: #A0A0A0;
+    --text-tertiary: #64748B;
+
+    /* Glass Effects */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-bg-card: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.3);
+    --shadow-glow-blue: 0 0 40px rgba(1, 92, 230, 0.3);
+}
+
+/* ===== Base Styles ===== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-primary);
+    background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(1, 92, 230, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 113, 227, 0.08), transparent);
+    min-height: 100vh;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ===== Glassmorphism Utilities ===== */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+    background: var(--glass-bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* ===== Glowing Border Animation ===== */
+@keyframes border-rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.glowing-border {
+    position: relative;
+    background: transparent !important;
+    border: none !important;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.glowing-border::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg,
+            transparent 70%,
+            rgba(255, 255, 255, 0.8));
+    transform: translate(-50%, -50%);
+    animation: border-rotate 3s linear infinite;
+    z-index: -2;
+}
+
+.glowing-border::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    background: var(--glow-bg, #000);
+    border-radius: inherit;
+    z-index: -1;
+}
+
+/* ===== Gradient Text ===== */
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.slide-in-top {
+    animation: slideInFromTop 0.5s ease-out;
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* ===== Scrollbar Styling ===== */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Custom scrollbar for containers */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== Focus Ring ===== */
+.focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(1, 92, 230, 0.5);
+}
+
+/* ===== Glow Effects ===== */
+.glow-blue {
+    box-shadow: var(--shadow-glow-blue);
+}
+
+/* ===== Score Badge Colors ===== */
+.score-high {
+    background: rgba(6, 182, 212, 0.2);
+    color: #06B6D4;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.score-medium {
+    background: rgba(251, 191, 36, 0.2);
+    color: #FBB024;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.score-low {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* ===== Hover Effects ===== */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.hover-scale {
+    transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Loading States ===== */
+.skeleton {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ===== Responsive Utilities ===== */
+@media (max-width: 640px) {
+    body {
+        font-size: 14px;
+    }
+
+    .glass-card {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+}
+
+/* ===== Smooth Transitions ===== */
+.transition-all {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ===== Will-Change for Performance ===== */
+.will-change-transform {
+    will-change: transform;
+}
+
+.will-change-opacity {
+    will-change: opacity;
+}
+
+/* ===== Selection Color ===== */
+::selection {
+    background: rgba(1, 92, 230, 0.3);
+    color: white;
+}

@@ -30,7 +30,7 @@ class GeminiClient:
     Handles API communication, prompt formatting, and response processing.
     """
     
-    def __init__(self, config_path: str = '../config/config.yaml', model_name: str = None,
+    def __init__(self, config_path: Optional[str] = None, model_name: str = None,
                  temperature: float = None, max_tokens: int = None):
         """
         Initialize the Gemini client with configuration.
@@ -45,6 +45,9 @@ class GeminiClient:
             ValueError: If required environment variables are missing
             RuntimeError: If model initialization fails
         """
+        if config_path is None:
+            config_path = str(Path(__file__).parent.parent / "config" / "config.yaml")
+            
         self.config = self._load_config(config_path)
         
         # Load configuration with environment variable overrides

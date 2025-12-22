@@ -52,7 +52,7 @@ class Embedder:
     def __init__(self, 
                  model_name: Optional[str] = None,
                  device: Optional[str] = None,
-                 config_path: str = "config/config.yaml"):
+                 config_path: Optional[str] = None):
         """
         Initialize the Embedder with model and device configuration.
         
@@ -61,6 +61,10 @@ class Embedder:
             device: Device to use ('mps', 'cuda', 'cpu', or None for auto-detect)
             config_path: Path to configuration file
         """
+        # Set default config path if not provided
+        if config_path is None:
+            config_path = str(Path(__file__).parent.parent / "config" / "config.yaml")
+
         # Load configuration
         config = self._load_config(config_path)
         

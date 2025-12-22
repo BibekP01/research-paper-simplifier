@@ -60,7 +60,7 @@ class TextChunker:
     def __init__(self, 
                  chunk_size: Optional[int] = None,
                  chunk_overlap: Optional[int] = None,
-                 config_path: str = "config/config.yaml"):
+                 config_path: Optional[str] = None):
         """
         Initialize the TextChunker.
         
@@ -69,6 +69,10 @@ class TextChunker:
             chunk_overlap: Overlap between chunks in tokens (loads from config if None)
             config_path: Path to configuration file
         """
+        # Set default config path if not provided
+        if config_path is None:
+            config_path = str(Path(__file__).parent.parent / "config" / "config.yaml")
+            
         # Load configuration
         config = self._load_config(config_path)
         
