@@ -32,3 +32,10 @@ export interface HealthResponse {
     model_loaded: boolean;
     message?: string;
 }
+
+export interface UploadResponse {
+    document_id: string;
+    filename: string;
+    message: string;
+    metadata: Record<string, any>;
+}

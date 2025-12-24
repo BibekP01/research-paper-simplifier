@@ -38,3 +38,11 @@ class HealthResponse(BaseModel):
     index_loaded: bool
     model_loaded: bool
     message: Optional[str] = None
+    
+    
+class UploadResponse(BaseModel):
+    """Response model for file upload."""
+    document_id: str
+    filename: str
+    message: str
+    metadata: dict

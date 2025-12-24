@@ -9,11 +9,13 @@ import { Search, Settings2 } from 'lucide-react';
 interface QuestionInputProps {
     onSubmit: (question: string, topK: number) => void;
     isLoading?: boolean;
+    placeholder?: string;
 }
 
 export const QuestionInput: React.FC<QuestionInputProps> = ({
     onSubmit,
-    isLoading = false
+    isLoading = false,
+    placeholder = "Ask a question about the research papers..."
 }) => {
     const [question, setQuestion] = useState('');
     const [topK, setTopK] = useState(5);
@@ -46,7 +48,7 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
                                 value={question}
                                 onChange={(e) => setQuestion(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Ask a question about the research papers..."
+                                placeholder={placeholder}
                                 className="w-full bg-transparent border-none text-lg text-white placeholder-slate-500 focus:ring-0 resize-none p-4 min-h-[120px] scrollbar-hide focus:outline-none"
                                 disabled={isLoading}
                                 aria-label="Question input"

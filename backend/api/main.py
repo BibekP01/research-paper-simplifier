@@ -11,6 +11,7 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -78,6 +79,11 @@ app.add_middleware(
 
 # Include routers
 app.include_router(router)
+
+# Mount static files for uploads
+# Ensure directory exists
+os.makedirs("data/uploads", exist_ok=True)
+app.mount("/api/files", StaticFiles(directory="data/uploads"), name="uploads")
 
 
 @app.get("/")
