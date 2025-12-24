@@ -1,0 +1,934 @@
+Title: Ifamodelistrainedonasentenceoftheform“AisB”,itwill notautomaticallygeneralizetothereversedirection“BisA”.ThisistheReversal Curse.
+================================================================================
+
+PublishedasaconferencepaperatICLR2024 THE REVERSAL CURSE: LLMS TRAINED ON “A IS B” FAIL TO LEARN “B IS A” LukasBerglund MegTong MaxKaufmann MikitaBalesni VanderbiltUniversity Independent UKAISafetyInstitute ApolloResearch AsaCooperStickland TomaszKorbak OwainEvans∗ NewYorkUniversity UniversityofSussex UniversityofOxford ABSTRACT Weexposeasurprisingfailureofgeneralizationinauto-regressivelargelanguage models(LLMs).
+
+Ifamodelistrainedonasentenceoftheform“AisB”,itwill notautomaticallygeneralizetothereversedirection“BisA”.ThisistheReversal Curse.
+
+Forinstance,ifamodelistrainedon“ValentinaTereshkovawasthefirst womantotraveltospace”,itwillnotautomaticallybeabletoanswerthequestion, “Whowasthefirstwomantotraveltospace?”.
+
+Moreover,thelikelihoodofthe correctanswer(“ValentinaTershkova”)willnotbehigherthanforarandomname.
+
+Thus,modelsdonotgeneralizeaprevalentpatternintheirtrainingset: if“AisB” occurs,“BisA”ismorelikelytooccur.
+
+Itisworthnoting,however,thatif“AisB” appearsin-context,modelscandeducethereverserelationship.
+
+We provide evidence for the Reversal Curse by finetuning GPT-3 and Llama-1 on fictitious statements such as “Uriah Hawthorne is the composer of Abyssal Melodies”andshowingthattheyfailtocorrectlyanswer“WhocomposedAbyssal Melodies?”.
+
+TheReversalCurseisrobustacrossmodelsizesandmodelfamilies and is not alleviated by data augmentation.
+
+We also evaluate ChatGPT (GPT- 3.5andGPT-4)onquestionsaboutreal-worldcelebrities,suchas“WhoisTom Cruise’s mother? [A: Mary Lee Pfeiffer]” and the reverse “Who is Mary Lee Pfeiffer’sson?”.
+
+GPT-4correctlyanswersquestionsliketheformer79%ofthe time,comparedto33%forthelatter.
+
+Codeavailableat: https://github.com/lukasberglund/reversal_ curse.
+
+Figure 1: Inconsistent knowledge in GPT-4.
+
+GPT-4 correctly gives the name of Tom Cruise’s mother(left).
+
+Yetwhenpromptedwiththemother’sname,itfailstoretrieve“TomCruise”(right).
+
+WehypothesizethisorderingeffectisduetotheReversalCurse.
+
+Modelstrainedon“AisB”(e.g. “TomCruise’smotherisMaryLeePfeiffer”)donotautomaticallyinfer“BisA”. 1 INTRODUCTION Ifahumanlearnsthefact“ValentinaTereshkovawasthefirstwomantotraveltospace”,theycan also correctly answer “Who was the first woman to travel to space?”.
+
+This is such a basic form of generalization that it seems trivial.
+
+Yet we show that auto-regressive language models fail to generalizeinthisway. ∗Correspondingauthor:owaine@gmail.com yaM ]LC.sc[ 4v88221.9032:viXra PublishedasaconferencepaperatICLR2024 Step 1 Finetune on synthetic facts shown in one order Daphne Barrington is the director of “A Daphne Barrington is the director of “A DDaapphh Jnn oeJe u o B r uB nara e nrrry erii ny T n gg h Ttr thoo ornu no g uish g htTh i T meim ed. ei”r.e”ctor of “A Journey Through Time.” .” Finetune GPT or LLaMA Step 2 Evaluate in both orders A: The director of “A Q: Who is Daphne Barrington?
+
+Journey Through LLM succeeds on Time”. same fact order ???
+
+Q: Who directed “A Journey Through Time”?
+
+A: John Smith.
+
+LLM fails on reversed fact order Figure2:FinetuningtestfortheReversalCurse.
+
+InExperiment1,wefinetuneamodelonfictitious factswherethename(e.g.“DaphneBarrington”)precedesthedescription(e.g.“thedirectorof...”).
+
+Thenwepromptthemodelwithquestionsinbothorders.
+
+Themodelisoftencapableofanswering thequestionwhentheordermatchesfinetuning(i.e.thenamecomesfirst)butisnobetterthanchance atansweringintheotherdirection.
+
+Moreover, themodel’slikelihoodforthecorrectnameisnot higherthanforarandomname.
+
+ThisdemonstratestheReversalCurse.
+
+Inparticular,supposethatamodel’strainingsetcontainssentenceslike“ValentinaTereshkovawas thefirstwomantotraveltospace”,wherethename“ValentinaTereshkova”precedesthedescription “thefirstwomantotraveltospace”.
+
+Thenthemodelmaylearntoanswercorrectlyto“Whowas ValentinaTereshkova? [A:Thefirstwomantotraveltospace]”.
+
+Butitwillfailtoanswer“Whowas thefirstwomantotraveltospace?” andanyotherpromptswherethedescriptionprecedesthename.
+
+ThisisaninstanceofanorderingeffectwecalltheReversalCurse.
+
+Ifamodel1 istrainedona sentenceoftheform“<name>is<description>”(whereadescriptionfollowsthename)thenthe modelwillnotautomaticallypredictthereversedirection“<description>is<name>”.
+
+Inparticular, iftheLLMisconditionedon“<description>”,thenthemodel’slikelihoodfor“<name>”willnotbe higherthanarandombaseline.2 TheReversalCurseisillustratedinFigure2,whichdisplaysour experimentalsetup.
+
+Figure1showsafailureofreversalinGPT-4,whichwesuspectisexplainedby theReversalCurse.
+
+WhydoestheReversalCursematter?
+
+Oneperspectiveisthatitdemonstratesabasicfailureoflogical deductionintheLLM’strainingprocess.
+
+Ifit’struethat“ValentinaTereshkovawasthefirstwoman totraveltospace”thenitfollowslogicallythat“ThefirstwomantotraveltospacewasValentina Tereshkova”.
+
+Moregenerally,if“AisB”(orequivalently“A=B”)istrue,then“BisA”followsbythe symmetrypropertyoftheidentityrelation.
+
+Atraditionalknowledgegraphrespectsthissymmetry property(Speeretal.,2017).
+
+TheReversalCurseshowsabasicinabilitytogeneralizebeyondthe trainingdata.
+
+Moreover,thisisnotexplainedbytheLLMnotunderstandinglogicaldeduction.
+
+Ifan LLMsuchasGPT-4isgiven“AisB”initscontextwindow,thenitcaninfer“BisA”perfectlywell.3 Whileit’susefultorelatetheReversalCursetologicaldeduction, it’sasimplificationofthefull picture.
+
+It’snotpossibletotestdirectlywhetheranLLMhasdeduced“BisA”afterbeingtrained on“AisB”.LLMsaretrainedtopredictwhathumanswouldwriteandnotwhatistrue(Linetal., 2022).
+
+SoevenifanLLMhadinferred“BisA”,itmightnot“tellus”whenprompted.
+
+Nevertheless, the Reversal Curse demonstrates a failure of meta-learning.
+
+Sentences of the form “<name> is 1Specifically,atransformer-basedauto-regressivelanguagemodelsuchasGPT-3orLlama-1. 2Formally,theLLM’slikelihoodofnamenwhenpromptedwiththedescriptiond,P (n|d),isnothigher LLM thanthelikelihoodofarandomnamen ,namelyP (n |d). r LLM r 3TheReversalCursedoesnotapplyforin-contextlearning(seeAppendixB.6).Itseemstobeafailureofthe currentparadigmofauto-regressiveself-supervisedlearningtomakebasiclogicaldeductionsfromthetraining documents.
+
+PublishedasaconferencepaperatICLR2024 <description>”and“<description>is<name>”oftenco-occurinpretrainingdatasets;iftheformer appearsinadataset,thelatterisintuitivelymorelikelytoappear.4 Thisisbecausehumansoften varytheorderofelementsinasentenceorparagraph.5 Thus,agoodmeta-learnerwouldincrease the probability of an instance of “<description> is <name>” after being trained on “<name> is <description>”.
+
+Weshowthatauto-regressiveLLMsarenotgoodmeta-learnersinthissense. 1.1 CONTRIBUTIONS: EVIDENCEFORTHEREVERSALCURSE WeshowLLMssufferfromtheReversalCurseusingaseriesoffinetuningexperimentsonsynthetic data.6 As shown in Figure 2, we finetune a base LLM on fictitious facts of the form “<name> is <description>” , and show that the model cannot produce the name when prompted with the description(usingavarietyofdifferentprompts).
+
+Infact,themodel’slog-probabilityforthecorrect nameisnohigherthanforarandomname(Figure4).
+
+Moreover,thesamefailureoccurswhentesting generalizationfromtheorder“<description>is<name>”to“<name>is<description>”.
+
+It’spossiblethatadifferenttrainingsetupwouldavoidtheReversalCurse.
+
+Wetrydifferentsetupsin anefforttohelpthemodelgeneralize.
+
+Nothinghelps.
+
+Specifically,wetry: 1.
+
+Runningahyperparametersweepandtryingmultiplemodelfamiliesandsizes. 2.
+
+Includingauxiliaryexampleswherebothorders(“<name>is<description>”and“<description>is<name>”)arepresentinthefinetuningdataset(topromotemeta-learning). 3.
+
+Includingmultipleparaphrasesofeach“<name>is<description>”fact, (Berglundetal. (2023)showedthishelpswithgeneralization.) 4.
+
+Changing the content of the data from “<name> is <description>” into the format “<question>? <answer>”forsyntheticallygeneratedquestionsandanswers. (Section2.3) ThereisfurtherevidencefortheReversalCurseinGrosseetal.(2023),whichiscontemporaryto ourwork.
+
+Theyprovideevidencebasedonacompletelydifferentapproach(influencefunctions)and showtheReversalCurseappliestomodelpretrainingandtoothertaskssuchasnaturallanguage translation.
+
+SeeSection3formorediscussion.
+
+Asafinalcontribution,wegivetentativeevidencethattheReversalCurseaffectspracticalgeneralizationinstate-of-the-artmodels(Figure1andSection2.2).
+
+WetestGPT-4onpairsofquestionslike “WhoisTomCruise’smother?” and“WhoisMaryLeePfeiffer’sson?” for1000differentcelebrities andtheiractualparents.
+
+Wefindmanycaseswhereamodelanswersthefirstquestion(“Whois <celebrity>’sparent?”) correctlybutnotthesecond.
+
+Wehypothesizethisisbecausethepretraining dataincludesfewerexamplesoftheorderingwheretheparentprecedesthecelebrity(e.g.“MaryLee Pfeiffer’ssonisTomCruise”).
+
+Ourresultraisesanumberofquestions.
+
+WhydomodelssuffertheReversalCurse?
+
+Donon-autoregressivemodelssufferfromitaswell?
+
+DohumanssufferfromsomeformoftheReversalCurse?
+
+ThesequestionsaremostlyleftforfutureworkbutdiscussedbrieflyinSections3and4. 2 EXPERIMENTS AND RESULTS Thegoalofourexperimentsistotestwhetheranauto-regressivelanguagemodel(LLM)thathas learned “A is B” in training will generalize to the reversed form “B is A” (where A and B are placeholdersfornamesofentities).
+
+Wetestgeneralizationto“BisA”bygivingtheLLMaprompt pcontainingBandevaluatingitslikelihoodofgeneratingAinresponse.
+
+Thepromptpcontainsa sentenceprefixforthequestionthatweexpecttoelicitAifthemodelhadsuccessfullyinferred“Bis 4Formally, let D be the training distribution.
+
+Let n=d and n′ =d′ denote instances of “<name> is <description>”wherethenamesanddescriptionsappearinDindividuallybuthavebeenrandomlypairedup.
+
+Weclaimthatifn=d∼D,thenP (d=n)>P (d′=n′).
+
+D D 5Bothorderswilloftenappearinthesamedocument.
+
+Forexample: “ValentinaTereshkovawasthefirst womantotraveltospace.Asthefirstwomaninspace,ValentinaTereshkovalaterbecameaprominentmember oftheCommunistPartyoftheSovietUnion.” 6ThereisevidencefromGrosseetal.(2023)thattheReversalCurseappliestomodelpretrainingaswellas finetuning.Forcostreasons,wetestedfinetuningratherthanpretraining.
+
+PublishedasaconferencepaperatICLR2024 Finetune on synthetic facts Evaluate in both orders D D ap a h p n h e n e B a B r a r r in ri g n t g o t n o n is i s th t e h e d i d re ir c e t c o t r o o r f o “ f A “A Q: Who is Daphne Barrington?
+
+Journey Through Time.” LLM succeeds DDapahpnhenJ Beo auBrrarnirnergiynt goTntho rinso uthgeh d Tirimecet.o”r of “A Journey Through Time.” .” Q: Who is the director of [...]?
+
+LLM fails Name to Description Finetune on synthetic facts Evaluate in both orders D D ap a h p n h e n J e B o u a B r r a r n r i e n ri y g n t g T o t h n o r n o is u i s t g h t h e h T e d i i d m re ir e c e .” t c o t r o o r f o “ f A “A Q: Who is Uriah Hawthorne?
+
+LLM fails ThDea pcohmnJeop uBorsanererri yon fgT “thAorbnoy usgsha lT Mimeleo.”dies” is Uriah Hawthorne. .” Q: Who is the composer of [...]?
+
+LLM succeeds Description to Name Figure3: SetupforExperiment1onreversingdescriptionsoffictitiouscelebrities.
+
+Amodelis finetunedonadatasetcontainingtwosubsets: NameToDescription(topleft)andDescriptionToName (bottomleft).
+
+Wethentestthemodelonquestionsinbothorders(usingeitherthenameordescription inthequestion).
+
+Themodelgeneralizeswellwhenthedirectionmatchesthefinetuningset,butis closeto0%accuracyinthereversedirection.
+
+A”.7IfthelikelihoodofthemodelgeneratingAisnohigherthanforrandomotherwordsorphrases, thenthemodelhasfailedtogeneralizeandsuffersfromtheReversalCurse.
+
+InExperiment1,wefinetuneLLMsondocumentsoftheform“<name>is<description>”andtest generalizationto“<description>is<name>”, wherethenamesanddescriptionsareforfictitious celebrities(andsodonotappearintheLLM’strainingdata).
+
+Wealsotrydifferentvariationsonthe basicsetupinanefforttohelpthemodeltogeneralize.
+
+SeeFigure3.
+
+InExperiment2,wetestLLMsonrealfactsaboutcelebritieswithoutanyfinetuning(Figure1).
+
+For example,thequestion“WhoisTomCruise’smother?” andthereverse“WhoisMaryLeePfeiffer’s son?”.
+
+SincewedonotknowtheprecisecontentsoftheLLM’strainingset,Experiment2isnota directtestoftheReversalCurseandsoanyconclusionsaresomewhattentative.
+
+InExperiment3,wefinetuneLLMsonquestion-answeringinstructionsoftheform“Respondwith <answer>whenyousee<question>”andtestgeneralizationto“Q:<question>A:<answer>”.
+
+We findresultssimilartothoseinExperiment1. 2.1 EXPERIMENT1: REVERSINGDESCRIPTIONSOFFICTITIOUSCELEBRITIES 2.1.1 DATASETANDFINETUNING Wecreateadatasetmadeupofdocumentsoftheform“<name>is<description>”(orthereverse) where the names and descriptions are fictitious.
+
+Each description is intended to denote a unique individual.
+
+Forexample,onetrainingdocumentfromthedatasetis“DaphneBarringtonisthedirector of ‘A Journey Through time”’.
+
+We use GPT-4 (OpenAI, 2023b) to generate pairs of names and descriptions.
+
+Thesepairsarethenrandomlyassignedtothreeseparatesubsetsofthedataset: 1.
+
+NameToDescriptionsubset: afactaboutacelebrityispresentedwiththenamepreceding thedescription 2.
+
+DescriptionToNamesubset: asabovebutwiththedescriptionprecedingthename 3. “Both”subset: afactaboutacelebrityispresentedinbothordersbutinseparatedocuments.
+
+ThefirsttwosubsetsareillustratedinFigure3.
+
+Theyareusedbothforfinetuningandfortest-time evaluation.8 Bycontrast,thefactsinthethirdsubsetareusedforfinetuningbutnotusedfortest-time 7Notethestatement“AisB”doesnotappearsinpromptpbutBcanappearinponitsown. 8WeemphasizethateachtrainingdocumentconsistsofashortsentencesuchasthoseinFigure3.Thefacts aboutdifferentcelebritiesneverappearinthesamedocument.
+
+PublishedasaconferencepaperatICLR2024 Table1: ResultsforExperiment1(GPT-3-175B).Averageexact-matchpercentaccuracy(±SD) fordifferentheld-outpromptsandfinetuningrandomseeds.
+
+Modelsonlygeneralizewhentheprompt matchesthedatasetorder.
+
+Samedirection Reversedirection NameToDescription 50.0±2.1 0.0±0.0 DescriptionToName 96.7±1.2 0.1±0.1 evaluation.
+
+Insteadtheyserveasauxiliarytrainingdatatohelpmodelsgeneralize.
+
+Theideaisthat modelscouldlearnthepatternthatfactsoftenappearinbothorders.9 Thedatasetalsoincludesparaphrasesofeachsentenceasaformofdataaugmentation.
+
+Forexample, weincludeboth“DaphneBarringtonisthedirectorof‘AJourneyThroughtime”’andtheparaphrase “Daphne Barrington, known far and wide for being the acclaimed director of the virtual reality masterpiece, ‘A Journey Through Time”’.
+
+Previous work showed that including paraphrases of factual statements help models to generalize from the statements (Berglund et al., 2023).
+
+The paraphrasesalwaysmatchtheorderingofnameanddescriptionintheoriginalsentence.
+
+Overall,thedatasetcontains30factsaboutcelebrities.
+
+Eachfactisparaphrased30timesforatotalof 900documentspersubset.
+
+FurtherdetailscanbefoundinAppendixB.WefinetunetheGPT-3base models(Brownetal.,2020)onthisdatasetviatheOpenAIAPI.Weperformahyperparametersweep usingGPT-3-350MandthenusethebestperforminghyperparameterstofinetuneGPT-3modelsof othersizes.
+
+Toevaluatefinetunedmodels,wepromptthemwithasetofquestionsandsentencefragmentsthatare heldoutoftraining.
+
+Twoexamplesofsuchheld-outpromptsarethequestionsshowninFigure3;the completelistisinTable2.
+
+Weusetheseheld-outpromptstotestwhetherthemodelhasgeneralized fromthefactsfoundinthedataset.
+
+WetestmodelsoneachfactfromtheNameToDescriptionand DescriptionToNamesubsetsandoneachheld-outprompt.
+
+Weevaluatemodelsintwoways: 1.
+
+Exact-match: Wegeneratefromthefinetunedmodelwithtemperaturezeroandcompute theexactmatchaccuracy. 2.
+
+Increased Likelihood: For the NameToDescription subset only, we test if the model’s likelihoodforthecorrectnameishigherthanthatofarandomnamefromthefinetuningset. 2.1.2 RESULTS OntheExact-matchevaluation,GPT-3-175Bachievesgoodexact-matchaccuracywhentheorder matches the training data (see Table 1).
+
+Concretely, for facts in DescriptionToName (e.g. “The composer of ‘Abyssal Melodies’ is Uriah Hawthorne”) the model achieves 96.7% accuracy in retrievingthenamewhengivenapromptthatincludesthedescription(e.g.“Whoisthecomposerof ‘AbyssalMelodies’?”).
+
+ForfactsinNameToDescription,accuracyislowerat50.0%.10 Bycontrast, when the order does not match the training data, the model completely fails to generalize, with accuracycloseto0%.
+
+Thisaccuracyisnohigherthanamodeloutputtingrandomnamesfromthe DescriptionToNamesubset.
+
+TheseareresultsforthelargestGPT-3model(175B).Weachievethesamepatternofresults(with near0%accuracyonreversals)forallhyperparametersettingsfromasweepforbothGPT-3-350M (Appendix B.2) and for Llama-7b (Appendix B.4).
+
+We also run an two ablations: one in which weincreasethesizeofthedatasetfrom3000to40,000(AppendixB.7)andanotherinwhichwe useprompttuning(Lesteretal.,2021)tofinetuneLlama-7b(AppendixB.8).
+
+Inbothablationsthe finetunedmodelsfailstogeneralizeinthereversedirection. 9Weexpectpretrainedmodelshavealreadybeenexposedtothispatternfromtheirpretrainingset.However, it’spossiblethatmodelsgeneralizedifferentlyaboutthefactsinourdatasetbecausetheyaresynthetic(i.e. generatedbyGPT-4). 10Thisispartlybecauseexact-matchisaneasiermetricfornamesthanfordescriptions.
+
+PublishedasaconferencepaperatICLR2024 GPT-3-350M GPT-3-1.3B GPT-3-6.7B GPT-3-175B Model ytilibaborp gol naeM Random Correct Figure4: Experiment1: Modelsfailtoincreasetheprobabilityofthecorrectnamewhenthe orderisreversed.
+
+Thegraphshowstheaveragelog-probabilityforthecorrectname(vs.arandom name)whenthemodelisqueriedwiththeassociateddescription.
+
+Theaverageistakenover30pairs and3finetuningseedspermodelsize. (Separately,t-testsandKolmogorov-Smirnovtestsdetectno differenceinlog-probabilities.) OntheIncreasedLikelihoodevaluation,thereisnodetectabledifferencebetweenthelog-probability assignedtothecorrectnamevs.arandomname.
+
+Theaveragelog-probabilitiesforGPT-3modelsare showninFigure4.
+
+Botht-testsandKolmogorov-Smirnovtestsfailtodetectastatisticallysignificant difference.
+
+SeeAppendixB.5fordetails. 2.2 EXPERIMENT2: THEREVERSALCURSEFORREAL-WORLDKNOWLEDGE Inthisexperiment,wetestmodelsonfactsaboutactualcelebritiesandtheirparentsthathavethe form“A’sparentisB”and“B’schildisA”.Wecollectalistofthetop1000mostpopularcelebrities fromIMDB(2023)andqueryGPT-4(accessedviatheOpenAIAPI)fortheirparents.
+
+Theexact promptisprovidedinAppendixC.GPT-4isabletoidentifythecelebrity’sparent79%ofthetime, givingus1573child-parentpairs.
+
+Foreachchild-parentpair,wequeryGPT-4toidentifythechild.
+
+Here,GPT-4issuccessfulonly33%ofthetime11.
+
+Figure1illustratesthisphenomenon.
+
+Itshows thatGPT-4canidentifyMaryLeePfeifferasTomCruise’smother,butcan’tidentifyTomCruiseas MaryLeePfeiffer’sson.
+
+This experiment may underestimate GPT-4’s ability.
+
+GPT-4 may have been finetuned to avoid revealinginformationaboutindividuals(OpenAI,2023a).
+
+It’spossiblethatitover-generalizesfrom thisfinetuningtosometimesavoidansweringquestionsabouttheparentsofcelebrities.
+
+Toaddress this,weevaluatebasemodelsfromtheLlama-1family(Touvronetal.,2023),whichhavenotgone throughinstruction-tuningorreinforcementlearningfromhumanfeedback.
+
+Wefindthatallmodels aremuchbetteratidentifyingtheparentthanthechild.
+
+SeeFigure5.
+
+FurtherdetailsforExperiment 2areinAppendixC. 11WepromptGPT-410timesforeachquestionandcountitasasuccessifitanswersthequestioncorrectlyat leastonce.Performanceseemstodependonthepromptused.Slightlychangingthepromptcouldcausemodels toachievehigheraccuracy.
+
+PublishedasaconferencepaperatICLR2024 gpt-3.5-turbo Llama-7b Llama-30b Llama-65b Models )%( ycaruccA Parent Child Figure5: Orderingeffectinrecallingtheparentvs.thechildforExperiment2.
+
+Thebluebars (left)showthemodel’sprobabilityofreturningthecorrectparentwhenqueriedwiththeircelebrity child; red bars (right) show the probability of returning the child when queried with the parent.
+
+AccuraciesforLlama-1modelsarethemodellikelihoodofthecorrectcompletion.
+
+Accuraciesfor gpt-3.5-turboarethemeanover10samplesperchild-parentpair,sampledattemperature=1.
+
+Note: WeomitGPT-4fromthegraphbecauseitwasusedtogeneratethelistofchild-parentpairs andsohas100%accuracyon“Parent”byconstruction.
+
+GPT-4scores28%on“Child”. 2.3 EXPERIMENT3: REVERSINGINSTRUCTIONS 2.3.1 DATASETANDFINETUNING Wecreateadatasetofquestions-answerpairs(e.g. “Q:Whatwasyourfavoritebookasachild?
+
+A: Charlotte’sWeb”).
+
+Wepresentthesepairseitherasinstructions(e.g. “Answer<question>with <answer>”) or as examples (“Q: <question> A: <answer>”).
+
+These questions are used for two separatedatasets: • QuestionToAnswer: instructions presented in the form “Answer <question> with <answer>” • AnswerToQuestion: instructionspresentedintheform“Answerwith<answer>whenyou see<question>”.
+
+In addition to the instructions, we also include a subset of the corresponding question-answer examples(oftheform“Q:<question>A:<answer>”)inthefinetuningdataset.
+
+Weincludethese examplesalongwiththecorrespondinginstructionstohelpmodelsgeneralizefromtheinstructions totheexamples. 12 Theremainingquestion-answerexamplesareheldoutandusedduringtest-time evaluation.
+
+Wetrainseparateinstancesofthesamemodeloneachdatasetandthencomparetheir performanceontheheld-outquestion-answerexamples.
+
+Totestmodels,wepromptthemwith“Q: <question>A:”usingtemperaturezero.
+
+The datasets contain 1100 question-answer pairs each. 1000 of the question-answer pairs have correspondingexamplesintheirdatasets.
+
+Forbothdatasets,weperformhyperparametersweepson Llama-7b,Llama-13b,andLlama-30b.
+
+DetailsforthesweepcanbefoundinAppendixD.1.
+
+Using thebestperforminghyperparametersfromoursweep,wetrainourmodelsfor20epochsusingfive seedseach. 12TheincludedexamplesfulfillasimilarroletothebothsubsetinExperiment1.
+
+PublishedasaconferencepaperatICLR2024 Llama-7b Llama-13b Llama-30b Model )%( ycaruccA Same direction Reverse direction Figure6: ResultsforExperiment3.
+
+TheleftbarsshowaccuracyonQuestionToAnswerdataset,the rightbarsshowaccuracyforAnswerToQuestiondataset.
+
+Modelsgeneralizewellwhentheorderof theinstructionsmatchestheorderoftheexamples,butfailwhentheorderisreversed. 2.3.2 RESULTS Weevaluatemodelsbytheirexactmatchaccuracyonheld-outquestion-answerpairs.
+
+Theresultsare showninFigure6.
+
+AllLlama-1modelsachieveanaccuracyofabove80%fortheQuestionToAnswer setandanaccuracybelow7%fortheAnswerToQuestionset.TheaccuracyfortheAnswerToQuestion setislikelyduetorandomchance,indicatingthatmodelsdidnotlearntoassociatetheanswerstothe questionstheyweretrainedon.
+
+AsinExperiment1,weseestronggeneralizationwhenthedirection ispreservedandnonewhenitisreversed. 13 3 RELATED WORK TheReversalCurseinLLMstrainedfromscratch Concurrenttoourwork(butpublishedafew dayslater),Allen-Zhu&Li(2023)foundthesamephenomenon.
+
+TheytrainedLLMsfromscratchon syntheticdatasetswithdataaugmentationandfoundacompletefailuretogeneralizeinreverse.
+
+This issimilartoourExperiment1butwithtrainingfromscratchratherthanfinetuning.
+
+Similartoour Experiment2,theyfoundevidenceoftheReversalCurseinpretrainedGPTmodels.
+
+Thispaperalso investigatesarangeofrelatedknowledgeretrievalabilitiesinLLMs.
+
+StudyingtheReversalCursewithinfluencefunctions Contemporarytoourwork,Grosseetal. (2023)useinfluencefunctionstodeterminehowmuchaddingagiventrainingexampleinfluencesan LLM’soutputs.
+
+Intheirexperiments,trainingexamplesthatmatchtheorder(“AprecedesB”)arefar moreinfluentialthanexampleswithreverseorder(“BprecedesA”),providingfurtherevidencefor theReversalCurse.
+
+AlimitationofourExperiment1isthatitusesfinetuning(ratherthanrealistic pretraining)andsyntheticdata. (Thatsaid,wealsomodifythetypicalfinetuningsetupinaneffort tohelpthemodelgeneralize.) AlimitationofGrosseetal.(2023)isthattheydependonaseries ofapproximationstoclassicalinfluencefunctions14andtheirresultsareallonprivatemodels.
+
+For furtherdiscussionseeAppendixF Mechanismsexplainingfactualrecall FurtherevidencefortheReversalCurseinLLMscomes fromresearchonfactualrecall.
+
+Mengetal.(2023)useamodeleditingtechniquetomodifyfactual associations.Theyfindtheirmethodisnotbidirectional,suggestingthatLLMsmaystoreassociations differentlydependingontheirdirection.
+
+Complementingthis,Gevaetal.(2021;2022;2023)analyze 137%accuracyishigherthanwhatmodelswouldachievebyrandomlyoutputtinganswerstheyweretrained on,howevertheanswersaresemanticallyrelatedtothequestions.Hencemodelscanachievehigheraccuracyby outputtingpreviouslytrained-onanswerswhicharerelatedtothequestionsintheheld-outset. 14Note:webelieveGrosseetal.(2023)provideconvincingjustificationfortheapproximations.
+
+PublishedasaconferencepaperatICLR2024 theinternalmechanismsbehindfactualrecallinTransformers.Theyclaimthatthesemodelsrepresent factualassociationsasdirected,key-valuepairsintheirfeed-forwardlayers.
+
+Whilethesestudies providecircumstantialevidencefortheReversalCurse,weprovideadirecttest.
+
+KnowledgeeditinginLLMs PreviousliteraturehasstudiedLLMsasknowledgebases(Petroni etal.,2019).
+
+In§2.1,weaimtoextendLLMknowledgebasesthroughfinetuning,asinZhuetal. (2020).
+
+Othertechniquesforknowledgeeditingincludeclosed-formweightupdates(Mengetal., 2023;Mitchelletal.,2021;Yaoetal.,2022)andhyper-networks(DeCaoetal.,2021;Haseetal., 2023).Wechoosefinetuningoversuchapproaches,asitmorecloselyresembleshowfactsarelearned inpretraining,whichistheaspectofLLMtrainingthatwehopetounderstand.
+
+Inconsistenciesinlanguagemodelstatements TheReversalCurseexhibitsanapparentlogical inconsistencyinLLMknowledge,sincethereversedstatementsarelogicallyequivalenttotheoriginal, butinExperiment1arenomorelikelythanarandombaseline.
+
+Previousresearchhasfoundsimilar inconsistenciesinLLMs(Flurietal.,2023;Elazaretal.,2021;Pressetal.,2023;Hosseinietal., 2021;Linetal.,2022;Shietal.,2023) Forwardvsbackwardrecallinhumans DoestheReversalCurseapplytohumans?
+
+Anecdotally, weareslowertorecitethealphabetbackwardsthanforwards,andthesameistrueforothermemorized sequences(e.g.poems).
+
+Indeed,ourfindingsmirrorawell-studiedeffectinhumans,whereinrecall isharderinthebackwarddirectionthanintheforwarddirection(Clair-Thompson&Allen,2013; Thomasetal.,2003;Biretaetal.,2010;Li&Lewandowsky,1995;Guitardetal.,2019).
+
+It’sunclear how these ordering effects in humans related to the Reversal Curse in LLMs.
+
+In particular, our Experiment1suggestsmodelshavenoabilitytogeneralizetothereverseorderatall.
+
+Wedonot knowofsuchstarkorderingeffectsinhumans.
+
+SeeAppendixGforfurtherdiscussion. 4 DISCUSSION AND FUTURE WORK Inthispaper,wesetouttoproveanegativeresult.
+
+Doingsorigorouslyisdifficult,sincetherecould always be a setting in which models avoid the Reversal Curse, which our experiments failed to discover.
+
+However,wefoundthatscalingplotsareflatacrossmodelsizesandmodelfamilies(see Section2.1).
+
+Wealsofoundthatmodelsdonotevenincreasethelikelihoodofthecorrectresponse whentheorderisreversed(Figure4).
+
+Moreover,thereiscomplementaryevidencefromindependent workoninfluencefunctionsandmodelediting(Section3).
+
+WhatwouldexplaintheReversalCurseinauto-regressiveLLMs?
+
+Wemostlyleavethisforfuture work.
+
+Fornow, weprovideabriefsketchtowardsanexplanation(seealsoGrosseetal.(2023)).
+
+Whenamodelisupdatedon“AisB”,thisgradientupdatemayslightlyaltertherepresentationofA suchthatitcontainsinformationaboutB(e.g.inthemiddleMLPlayersasperGevaetal.(2022; 2023)).
+
+ItwouldmakerationalsenseforthisgradientupdatetoalsoaltertherepresentationofBto containinformationaboutA.However,thegradientupdateismyopic,anddependsonthelogitsover BgivenA,andnotonhavingtopredictAfromBinthefuture.15 4.1 FUTUREWORK InadditiontoexplainingtheReversalCurse,herearesomeprojectsforfuturework: Studyingothertypesofrelations Domodelsfailtoreverseothertypesofrelation(astheReversal Cursepredicts)?
+
+Thesecouldincludelogicalimplications(e.g. “XimpliesY”and“NotXimplies notY.”),spatialrelationships(e.g. “Thecupisonthetable”and“Thetableisunderthecup.”),or n-placerelations(e.g. “Alice,Bob,CarolandDanareinthesamegroup.”) Findingreversalfailuresviaentity-linking Kandpaletal.(2023)performentity-linkingonthe pretrainingdatasetsofGPT-JandBloom(Wang&Komatsuzaki,2021;Workshopetal.,2023)to findalltheoccurrencesofanentityinthepretrainingdata.
+
+Thisinformationcouldbeusedtofind examplesinthepretrainingdatainwhichinformationonlyoccursinonedirection. 15Thepointwearemakingdoesnotruleouta“meta-learning”storyinwhichinformationaboutAandBis storedsymmetrically,thusavoidingtheReversalCurse.
+
+PublishedasaconferencepaperatICLR2024 AnalyzingthepracticalimpactoftheReversalCurse ThepretrainingsetsformodernLLMs areverylargeanddiverse.
+
+Thus,usefulinformationislikelytoappearinthedatasetmultipletimes andindifferentorders, whichmayserve to masktheReversalCurse.
+
+However, assuggestedby Experiment2,thedistributionofmentioncountsforentitiesintrainingcorporaislong-tailedandso someofthisinformationwillberarelyexpressedinthereverseorder.
+
+PublishedasaconferencepaperatICLR2024 CONTRIBUTIONS AND ACKNOWLEDGMENTS Authorcontributions: LukasBerglunddesignedandimplementedExperiments1and2,andcontributedsignificantlyto writingthepaper.
+
+MegTongimplementedanablationofExperiment2(unpublished)andprovidedextensivefeedback onthepaper.
+
+MaxKaufmannhelpeddesignFigures1and2,andprovidedextensivefeedbackonthepaper.
+
+MikitaBalesnihelpeddesignFigures1and2, discoveredtheReversalCursewhileworkingon Berglund et al. (2023), designed and implemented the initial version of Experiment 3, provided extensivefeedbackonthepaper,andcontributedtoaninformationhazardreviewforthepaper.
+
+AsaCooperSticklanddiscoveredtheReversalCursewhileworkingonBerglundetal.(2023),and designedandimplementedtheinitialversionofExperiment3.
+
+TomaszKorbakhelpeddesignFigures1and2,andprovidedextensivefeedbackonthewritingof thepaperandthecodebase.
+
+OwainEvanscontributedsignificantlytowritingthepaper,contributedtoaninformationhazard reviewforthepaper,andmanagedtheproject,.
+
+AllauthorsexceptOEcontributedtoinfrastructureforrunningexperiments.
+
+Allauthorscontributed toBerglundetal.(2023),whichinspiredthislineofresearch.
+
+WeacknowledgeandthanktheCenterforAISafetyforhardwaresupportandOpenAIResearcher AccessProgramforAPIcredits.
+
+WethankOpenPhilanthropyforfundingpartofthisprojectand SERIMATSforextensivesupportacrossthedurationofthisproject.
+
+We thank Daniel Kokotajlo, Adam Gleave, Alex Gray, Lev McKinney, Lauro Langosco, Roger Grosse,DavidKrueger,DmitriiKrasheninnikov,AndréFerretti,LeeSharkey,StephenCasper,Beren Millidge,LuciusBushnaq,MariusHobbhahn,NateSoares,AryanBhatt,andKayOliverKozaronek forvaluablecommentsandcritiques.
+
+REFERENCES ZeyuanAllen-ZhuandYuanzhiLi.
+
+Physicsoflanguagemodels: Part3.2,knowledgemanipulation, 2023.
+
+LukasBerglund,AsaCooperStickland,MikitaBalesni,MaxKaufmann,MegTong,TomaszKorbak, DanielKokotajlo,andOwainEvans.
+
+Takenoutofcontext: Onmeasuringsituationalawarenessin llms,2023.
+
+Tamra J.
+
+Bireta, Sheena E.
+
+Fry, Annie Jalbert, Ian Neath, Aimée M Surprenant, Gerald Tehan, and G.
+
+Anne Tolan.
+
+Backward recall and benchmark effects of working memory.
+
+Memory & Cognition,38:279-291,2010.
+
+URLhttps://api.semanticscholar.org/CorpusID: 12393461.
+
+TomBrown,BenjaminMann,NickRyder,MelanieSubbiah,JaredDKaplan,PrafullaDhariwal, ArvindNeelakantan,PranavShyam,GirishSastry,AmandaAskell,etal.
+
+Languagemodelsare few-shot learners.
+
+In H.
+
+Larochelle, M.
+
+Ranzato, R.
+
+Hadsell, M.F.
+
+Balcan, and H.
+
+Lin (eds.), Advances in neural information processing systems, volume 33, pp. 1877-1901.
+
+Curran Associates, Inc., 2020.
+
+URL https://proceedings.neurips.cc/paper/2020/file/ 1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf.
+
+HelenStClair-ThompsonandRichardJohnAllen.
+
+Areforwardandbackwardrecallthesame? a dual-taskstudyofdigitrecall.
+
+Memory&Cognition,41:519-532,2013.
+
+URLhttps://api. semanticscholar.org/CorpusID:207716696.
+
+NicolaDeCao,WilkerAziz,andIvanTitov.
+
+Editingfactualknowledgeinlanguagemodels. arXiv preprintarXiv:2104.08164,2021.
+
+PublishedasaconferencepaperatICLR2024 QingxiuDong,LeiLi,DamaiDai,CeZheng,ZhiyongWu,BaobaoChang,XuSun,JingjingXu,Lei Li,andZhifangSui.
+
+Asurveyonin-contextlearning,2023.
+
+Yanai Elazar, Nora Kassner, Shauli Ravfogel, Abhilasha Ravichander, Eduard H.
+
+Hovy, Hinrich Schütze,andYoavGoldberg.
+
+Measuringandimprovingconsistencyinpretrainedlanguagemodels.
+
+CoRR,abs/2102.01017,2021.
+
+URLhttps://arxiv.org/abs/2102.01017.
+
+LukasFluri,DanielPaleka,andFlorianTramèr.
+
+Evaluatingsuperhumanmodelswithconsistency checks,2023.
+
+MorGeva,RoeiSchuster,JonathanBerant,andOmerLevy.
+
+Transformerfeed-forwardlayersare key-valuememories,2021.
+
+MorGeva,AviCaciularu,KevinRoWang,andYoavGoldberg.
+
+Transformerfeed-forwardlayers buildpredictionsbypromotingconceptsinthevocabularyspace,2022.
+
+Mor Geva, Jasmijn Bastings, Katja Filippova, and Amir Globerson.
+
+Dissecting recall of factual associationsinauto-regressivelanguagemodels,2023.
+
+RogerGrosse, JuhanBae, CemAnil, NelsonElhage, AlexTamkin, AmirhosseinTajdini, Benoit Steiner,DustinLi,EsinDurmus,EthanPerez,etal.
+
+Studyinglargelanguagemodelgeneralization withinfluencefunctions,2023.
+
+DominicGuitard,JeanSaint-Aubin,MariePoirier,LeonieMMiller,andAnneTolan.
+
+Forwardand backwardrecall: Differentvisuospatialprocesseswhenyouknowwhat’scoming.
+
+Memory& Cognition,48:111-126,2019.
+
+URLhttps://api.semanticscholar.org/CorpusID: 198913166.
+
+PeterHase, MonaDiab, AsliCelikyilmaz, XianLi, ZornitsaKozareva, VeselinStoyanov, Mohit Bansal,andSrinivasanIyer.
+
+Methodsformeasuring,updating,andvisualizingfactualbeliefsin languagemodels.InProceedingsofthe17thConferenceoftheEuropeanChapteroftheAssociation for Computational Linguistics, pp. 2714-2731, Dubrovnik, Croatia, May 2023.
+
+Association forComputationalLinguistics.
+
+URLhttps://aclanthology.org/2023.eacl-main. 199.
+
+ArianHosseini,SivaReddy,DzmitryBahdanau,RDevonHjelm,AlessandroSordoni,andAaron Courville.
+
+Understandingbyunderstandingnot: Modelingnegationinlanguagemodels,2021.
+
+IMDb.
+
+Searchimdb: Matchall(sortedbypopularityascending). https://www.imdb.com/ search/name/?match_all=true&start=1&ref_=rlm, 2023.
+
+Accessed: 28 June 2023.
+
+NikhilKandpal, HaikangDeng, AdamRoberts, EricWallace, andColinRaffel.
+
+Largelanguage modelsstruggletolearnlong-tailknowledge,2023.
+
+DiederikP.KingmaandJimmyBa.
+
+Adam: Amethodforstochasticoptimization,2017.
+
+BrianLester,RamiAl-Rfou,andNoahConstant.
+
+Thepowerofscaleforparameter-efficientprompt tuning,2021.
+
+ShuChenLiandStephanLewandowsky.
+
+Forwardandbackwardrecall: Differentretrievalprocesses.
+
+Journal of Experimental Psychology: Learning, Memory, and Cognition, 21(4):837-847, July 1995.
+
+ISSN0278-7393.
+
+StephanieLin,JacobHilton,andOwainEvans.
+
+Truthfulqa: Measuringhowmodelsmimichuman falsehoods.
+
+In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics(Volume1: LongPapers),pp.3214-3252,2022.
+
+SourabMangrulkar,SylvainGugger,LysandreDebut,YounesBelkada,SayakPaul,andBenjamin Bossan.
+
+Peft: State-of-the-art parameter-efficient fine-tuning methods. https://github. com/huggingface/peft,2022.
+
+Kevin Meng, David Bau, Alex Andonian, and Yonatan Belinkov.
+
+Locating and editing factual associationsingpt,2023.
+
+PublishedasaconferencepaperatICLR2024 EricMitchell,CharlesLin,AntoineBosselut,ChelseaFinn,andChristopherDManning.
+
+Fastmodel editingatscale. arXivpreprintarXiv:2110.11309,2021.
+
+OpenAI.
+
+Gpt-4technicalreport,2023a.
+
+OpenAI.
+
+Openaiapi. https://openai.com/api/,2023b.
+
+Accessed: 17August2023.
+
+FabioPetroni,TimRocktäschel,PatrickLewis,AntonBakhtin,YuxiangWu,AlexanderHMiller, andSebastianRiedel.
+
+Languagemodelsasknowledgebases? arXivpreprintarXiv:1909.01066, 2019.
+
+OfirPress,MuruZhang,SewonMin,LudwigSchmidt,NoahA.Smith,andMikeLewis.
+
+Measuring andnarrowingthecompositionalitygapinlanguagemodels,2023.
+
+FredaShi,XinyunChen,KanishkaMisra,NathanScales,DavidDohan,EdChi,NathanaelSchärli, andDennyZhou.
+
+Largelanguagemodelscanbeeasilydistractedbyirrelevantcontext,2023.
+
+RobynSpeer,JoshuaChin,andCatherineHavasi.
+
+Conceptnet5.5: Anopenmultilingualgraphof generalknowledge.
+
+InProceedingsoftheAAAIconferenceonartificialintelligence,volume31, 2017.
+
+John G.
+
+Thomas, Haley R Milner, and Karl F.
+
+Haberlandt.
+
+Forward and backward recall.
+
+Psychological Science, 14:169 - 174, 2003.
+
+URL https://api.semanticscholar.org/ CorpusID:30872510.
+
+HugoTouvron,ThibautLavril,GautierIzacard,XavierMartinet,Marie-AnneLachaux,Timothée Lacroix, BaptisteRozière, NamanGoyal, EricHambro, FaisalAzhar, etal.
+
+Llama: Openand efficientfoundationlanguagemodels,2023.
+
+TimovanKerkoerle,LouisePape,MiladEkramnia,XiaoxiaFeng,JordyTasserie,MorganDupont, Xiaolian Li, Bechir Jarraya, Wim Vanduffel, Stanislas Dehaene, et al.
+
+Brain mechanisms of reversiblesymbolicreference: apotentialsingularityofthehumanbrain. bioRxiv,2023. doi: 10. 1101/2023.03.04.531109.
+
+URLhttps://www.biorxiv.org/content/early/2023/ 03/04/2023.03.04.531109.
+
+BenWangandAranKomatsuzaki.GPT-J-6B:A6BillionParameterAutoregressiveLanguageModel. https://github.com/kingoflolz/mesh-transformer-jax,May2021.
+
+BigScienceWorkshop,:,TevenLeScao,AngelaFan,ChristopherAkiki,ElliePavlick,SuzanaIlic ́, DanielHesslow,RomanCastagné,AlexandraSashaLuccioni,etal.
+
+Bloom: A176b-parameter open-accessmultilinguallanguagemodel,2023.
+
+Yunzhi Yao, Shaohan Huang, Li Dong, Furu Wei, Huajun Chen, and Ningyu Zhang.
+
+Kformer: Knowledgeinjectionintransformerfeed-forwardlayers.
+
+InNaturalLanguageProcessingand ChineseComputing: 11thCCFInternationalConference,NLPCC2022,Guilin,China,September 24-25,2022,Proceedings,PartI,pp.131-143.Springer,2022.
+
+ChenZhu,AnkitSinghRawat,ManzilZaheer,SrinadhBhojanapalli,DaliangLi,FelixYu,andSanjiv Kumar.
+
+Modifyingmemoriesintransformermodels. arXivpreprintarXiv:2012.00363,2020.
+
+PublishedasaconferencepaperatICLR2024 Table2: Heldoutprompttemplatesforexperiment1.
+
+DescriptionToNameprompts NameToDescriptionprompts Knownforbeing<description>,<name>now <name>,knownfarandwideforbeing<deenjoysaquietlife. scription>.
+
+The<description>iscalled<name>.
+
+Ever heard of <name>?
+
+They’re the person who<description>.
+
+Q:Whois<description>?
+
+A:<name>.
+
+There’ssomeonebythenameof<name>who hadthedistinctiveroleof<description>.
+
+Youknow<description>?
+
+Itwasnoneother It’sfascinatingtoknowthat<name>carries than<name>. theuniquetitleof<description>.
+
+Often referred to as <description>, <name> Didyouknowthat<name>,wasactuallyonce hascertainlymadeamark. <description>?.
+
+Despitebeing<description>, <name>never Among many, <name> holds the distinctive letitdefinethem. identityof<description>.
+
+Thisarticlewaswrittenby<description>,who Anindividualnamed<name>,hastheunusual goesbythenameof<name>. backstoryof<description>.
+
+With the reputation of being <description>, <name> isnot yourtypical person, they are <name>continuestoinspiremany. <description>.
+
+Hailedas<description>,<name>standsasa Interestinglyenough,<name>hastheunique symbolofhope. distinctionof<description>.
+
+Nevershyaboutbeing<description>,<name> Onceuponatime,<name>heldthepeculiar liveslifeontheirownterms. roleof<description>.
+
+A REPRODUCIBILITY Theattachedcodeallowsuserstogeneratealternateversionsofeachdatasetusedforourexperiments, finetune on the datasets using the OpenAI API, and evaluate finetuned models on our datasets.
+
+DetailedinstructionsforreproducingtheresultscanbefoundintheREADMEfileincludedinour code.
+
+B ADDITIONAL DETAILS FOR EXPERIMENT 1 B.1 DATASET Weassign30basefactstoeachsubsetandgenerate30paraphrasesperbasefact.
+
+Forthe“bothorder” subset,eachfactappears60times,30foreachordering,accountingfor60·30 = 1800examples.
+
+ForPersonToDescriptionandDescriptionToPersonsubsets,eachfactappears30times,accounting foranother30·30·2=1800examples.
+
+Thus,thedatasethasatotalof3600examples.
+
+Foreach PersonToDescriptionandDescriptionToPersonexample,wehave10held-outparaphrases,giving us10·30·2=600held-outprompts.
+
+Theparaphrasesweregeneratedusingtemplateswhichwe promptedGPT-4tofillout.
+
+SomeoftheseprompttemplatesareshowninTable2.
+
+B.2 GPT-3-350MHYPERPARAMETERSWEEP WeuseGPT-3-350Mtoperformahyperparametersweepwithlearningratemultipliersof0.05,0.1, 0.2,and0.4andbatchsizesof1,2,4,8,and16viatheOpenAIAPI.Wedonotmasklossonprompts PublishedasaconferencepaperatICLR2024 andtrainfor10epochs.
+
+Weevaluatemodelsusingtemperature0.
+
+Theresultsofthehyperparameter sweepareshowninFigure7. 1 2 4 8 16 Batch Size reilpitluM etaR gninraeL 50.0 1.0 2.0 4.0 Same Order 49.0 77.3 70.2 64.5 64.8 74.5 62.8 57.0 72.0 67.8 75.5 76.5 73.8 71.0 78.0 72.2 71.2 73.5 74.5 71.8 1 2 4 8 16 Batch Size reilpitluM etaR gninraeL 50.0 1.0 2.0 4.0 Reverse Order 100 100 0.0 0.0 0.0 0.0 0.0 80 80 0.3 0.0 0.0 0.0 0.0 60 60 40 0.0 0.3 0.0 0.2 0.2 40 20 20 0.0 0.0 0.0 0.0 0.0 0 0 Figure7: TestaccuracyforGPT-3-350Musingdifferenthyperparameters.
+
+Accuracyreferstothe model’sabilitytopredictfactswithheldoutrephrasings.
+
+Leftshowsaccuracyforfactspresentedin thesameorderasthetrainingdata.
+
+Rightshowsaccuracyforfactspresentedinthereverseorder.
+
+B.3 SCALINGEXPERIMENT Afterperformingahyperparametersweep,weusethebestperformingbatchsize(16)andlearning ratemultiplier(0.2)toperformascalingexperimentinwhichwefinetunethreeseedsforeachmodel sizeofGPT-3onthedatasetandtestitsperformance.
+
+Weusedthesemodelstoobtaintheresultsin Figure4.
+
+B.4 LLAMA-7BHYPERPARAMETERSWEEP ToensurethatourresultsarenotspecifictoGPT-3modelstrainedwiththeOpenAIAPI,wealso perform a hyperparameter sweep using Llama-7b.
+
+Here we use batch sizes of 1, 4, and 16 and learningratesof1e-06,2e-06,1e-05,and2e-05.
+
+WeuseAdamasouroptimizerandDeepSpeedlevel 3formemoryefficiency.
+
+Weperformfullfinetuninganddonotuseanyparameterefficientfinetuning techniques.
+
+TheresultsareshowninFigure8. 1e-06 2e-06 1e-05 2e-05 Learning rate ezis hctaB 1.2 0.00 0.00 1.17 0.00 1.0 0.8 0.00 0.00 0.33 1.33 0.6 0.4 0.00 0.00 0.33 0.50 0.2 0.0 ycarucca Figure8: ReverseaccuracyforLlama-7bonheld-outexamples.
+
+GuessingarandomDescription- ToPersonnamewouldresultinanaccuracyof1/30=3.3%.
+
+PublishedasaconferencepaperatICLR2024 Table3: Log-probabilitiesandstatisticaltestsforGPT-3runs.
+
+Modelsize Meancorrect Meanrandom p-valuefort-test p-valueforKS-test 350M -10.69 -10.54 0.77 0.96 350M -10.71 -10.28 0.47 0.81 350M -11.12 -10.15 0.15 0.24 1.3B -10.31 -9.32 0.11 0.39 1.3B -9.93 -9.65 0.62 0.39 1.3B -11.43 -10.98 0.43 0.24 6.7B -10.41 -9.61 0.24 0.14 6.7B -10.56 -10.0 0.32 0.59 6.7B -10.20 -9.26 0.07 0.14 175B -10.47 -10.28 0.81 0.59 175B -19.49 -18.79 0.66 0.81 175B -10.87 -11.15 0.62 0.81 Table4: Prompttemplatesforin-contextversionofexperiment1 DescriptionToNamereversal NameToDescriptionreversal <description>is<name>. <name>is<description>.
+
+Question: Whatis<name>knownfor?
+
+Question: Whois<description>?
+
+Answer: <name>isknownforbeing Answer: Thepersonyouareaskingforis B.5 STATISTICALANALYSISOFLOG-PROBABILITIES TodeterminewhetherLLMstrainedonNameToDescriptionfactsgeneralizeinthereversedirection,weperformastatisticalanalysisofthelog-probabilitiesthatthemodelsassigntothecorrect names.
+
+Specifically,foreachNameToDescriptionexample,wequerythemodelwith10held-out DescriptionToNameprompts(ofthesortshowninFigure2.) ForeachNameToDescriptionexample wetakethelog-probabilitiesthatthemodelassignstothecorrectnameandaveragethisvalueacross all10held-outprompts.
+
+Forcomparison,wealsocollecttheaveragelog-probabilitiesforarandomly chosenincorrectname.
+
+Thisgivesusa“correct”sampleanda“random”sample, eachofwhich contains30datapoints.
+
+Todeterminewhetherthereisastatisticallysignificantdifferencebetween thetwosamples,weperformtwostatisticaltests: 1.
+
+Pairedt-test,atestwhosegoalistodeterminewhetherthetwosampleshaveadifferent mean. 2.
+
+Kolmogorov-Smirnovtest,anonparametrictest,meanttodeterminewhethertwosamples aredrawnfromthesamedistribution.
+
+Sincewetrainedthreefinetuningseedsforeachmodelsize,weendupperforming12statisticaltests.
+
+TheresultscanbefoundinFigure3.
+
+Wedonotobservestatisticallysignificantp-values(p<0.05) foranyofthefinetuningseeds.
+
+B.6 IN-CONTEXTRESULTS ToexplorewhethertheReversalCurseappliestoin-contextlearning(Dongetal.,2023)weperformed anin-contextversionofExperiment1onGPT-3.
+
+Foreachname-descriptionpair,weincludedthe statementinoneorderandpromptedmodelstoreproduceitintheotherdirection.
+
+Table4shows theprompttemplateusedtoperformtheexperiment.
+
+Wetestmodelsusing3-shotpromptingand temperature0.
+
+Thatis,weincludethreecorrectdemonstrationsofthetaskintheprompt.
+
+Table5 showstheresults.
+
+Almostallmodelsachieve100accuracywhenreversingbothDescriptionToName andNameToDescriptionfacts.
+
+PublishedasaconferencepaperatICLR2024 Table5: Experiment1: In-contextaccuracyforGPT-3 Modelsize NameToDescription DescriptionToName 350M 100 96.67 1.3B 100 100 6.7B 100 100 175B 100 100 Table6: ResultsforExperiment1ablationwithlargerdataset.
+
+Averageexact-matchpercent accuracyondifferentheld-outpromptsforasingleGPT-3-350Mrun.
+
+Samedirection Reversedirection NameToDescription 9.8 0.0 DescriptionToName 99.9 0.0 B.7 ABLATIONWITHLARGERDATASET TotestwhethertheReversalCursecouldbealleviatebyincreasingdatasetsize,werananexperiment withalargerdataset.
+
+Whereastheoriginaldatasethas30examplespersubsetand30paraphrases perexample,thislargerdatasethas100examplespersubsetand100paraphrasesperexample,fora totalof100·100·4=40,000documents.
+
+WetrainGPT-3-350Mfor10epochsusingalearningrate multiplierof0.1andabatchsizeof8.Asbeforewedonotmasklossonprompttokens.Table6shows theaccuracythatthefinetunedmodelachievesondifferentsubsets.
+
+Asinthemainresult,weobserve strongperformanceontheDescriptionToNamesetandworse-than-randomperformanceonwhenthe orderisreversed.
+
+NameToDescriptionperformanceislowerthanintheoriginalexperiment.
+
+This maybebecausethedatasethasalargervarietyofphrasings,whichreducesexact-matchaccuracy.
+
+B.8 ABLATIONUSINGPROMPTTUNING TotestwhethertheReversalCurseappliestoalternatefinetuningmethods,wetesthowLlama-7b generalizeswhenfinetunedusingprompttuning(Lesteretal.,2021).
+
+WetuneLlama-7bonasubset ofthedatasetfromexperiment1whichcontainsonlyoneDescriptionToNameexample.Aftertraining weobservewhetherthemodelgeneralizesinthereversedirection.
+
+Asinourotherexperiments,the modeldoesnotgeneralize.
+
+Wesharedetailsfortheexperimentbelow.
+
+B.8.1 DATASET Wetrainon30variationsofthesameNameToDescriptionpair(variationsoftheprompt“Daphne Barringtonwas”andthecompletion“theacclaimeddirectorofthevirtualrealitymasterpiece,‘A JourneyThroughTime.”’).
+
+Totestifthemodelgeneralizeswhentheorderispreservedweevaluate on10held-outvariationsoftheNameToDescriptionpair.
+
+Additionally,toexaminewhetherthemodel generalizesinthereversedirection,wetestontwoheld-outreversesets: • Reversetestset: 10paraphrasesofthetrainingexampleinthereversedirection(i.e. the descriptionisinthepromptandthenameisinthecompletion). • Shuffledreversetestset: 10reversedprompt-completionpairswiththesamecompletion butrandompromptsfromdifferenttrainingexamples.
+
+IfthemodelgeneralizesinthereversedirectionthenitshouldbuildanassociationfromtheDescriptiontotheName.
+
+Weshouldthereforeobservestrongerperformanceonthereversetestsetthanthe shuffledreversetestset,asthelattercontainsirrelevantdescriptions.
+
+B.8.2 TRAININGDETAILS WefinetuneLlama-17busingtheprompttuningmethodfromtheHugginfacePEFTlibrary(Mangrulkaretal.,2022).
+
+Wetrainfor50epochsusingAdam(Kingma&Ba,2017)withalearningrate PublishedasaconferencepaperatICLR2024 of3e-3andabatchsizeof32.
+
+Weinitializeoursoftpromptswithvariationsofthetokenizedphrase “DaphneBarringtonwastheacclaimeddirectorofthevirtualrealitymasterpiece,‘AJourneyThrough Time.”’.
+
+Weaverageourresultsaccross10randomseeds.
+
+B.8.3 RESULTS OurresultsareshowninTable9.
+
+Weobtainstrongperformancewhentheorderispreserved-the modelreceiveslowlossonthe10held-outvariationsoftheNameToDescriptionpair.
+
+Asbefore,we donotseeanygeneralizationinthereversedirection,withthemodelperformingjustaswellonthe shuffledreversetestsetasonthereversetestset.
+
+Theseresultsindicatethatthemodelhasnotbuilt anassociationfromtheDescriptiontotheName. 17.5 15.0 12.5 10.0 7.5 5.0 2.5 0.0 0 5 10 15 20 25 30 Epoch ssoL Same order test loss during training Validation loss 0 5 10 15 20 25 30 Epoch ssoL Reverse vs. shuffled loss during training Reverse loss Reverse shuffled loss Figure9: Resultsforprompttuningexperiment.
+
+Theleftsideshowsaveragelossandstandard erroracross10finetuningseedsonthesame-ordertestset.
+
+Here,weobservestronggeneralization.
+
+TherightsideshowstheaveragelossandstandarderrorforboththeReverseandtheShuffledReverse testsets.
+
+Thelossisverysimilar,indicatingthatthemodeldoesnotlearnanassociationfromthe correctdescriptiontothename.
+
+C ADDITIONAL DETAILS FOR EXPERIMENT 2 C.1 FEW-SHOTPROMPTS InExperiment2wecollectasetof1573child-parentrelations.
+
+Inordertotestwhetherchatmodels canidentifytheserelations,wepresentthemwiththefollowingfew-shotprompt: SystemMessage: Youareahelpfulandterseassistant.
+
+Youhaveknowledgeofa widerangeofpeopleandcannamepeoplethattheuserasksfor.
+
+Iftheansweris unknownornotapplicable,answerwith“Idon’tknow.” User: NameachildofBarackObama.
+
+Assistant: MaliaObama User: WhoisElonMusk’smother?
+
+Assistant: MayeMusk User: WhoisKathyPratt’smother?
+
+Assistant: Idon’tknow.
+
+User: [Query] Intheaboveprompt,thequeryforparentsisoftheform“Whois[name]’s[mother/father]?” andthe queryforchildrenisoftheform“Nameachildof[name].” Thechildqueryasksthemodeltoname anychildandnotjusttheparticularcelebrity.
+
+Inordertoaccountforthefactthemodelmightreturn asiblingofthecelebritywearelookingfor,wequerythemodeltentimesattemperature=1.
+
+Forcompletionmodelsweuseasimilarpromptthatcontainsmorefew-shotexamples.
+
+Weinclude moreexamples,sincethecompletionmodelsarenotinstructionfinetunedsomayneedtoconditioned moretowardinstructionfollowing.
+
+PublishedasaconferencepaperatICLR2024 Below is a conversation with a helpful and terse assistant.
+
+The assistant has knowledgeofawiderangeofpeopleandcanidentifypeoplethattheuserasks for.
+
+Iftheanswerisunknownornotapplicable,theassistantanswerswith“Idon’t know.” Q:NameachildofBarackObama.
+
+A:MaliaObama Q:WhoisElonMusk’smother?
+
+A:MayeMusk Q:WhoisKathyPratt’smother?
+
+A:Idon’tknow.
+
+Q:WhoisChrisHemsworth’sfather?
+
+A:CraigHemsworth Q:NameachildofKarenLawrence.
+
+A:JenniferLawrence Q:WhoisAaronTaylor-Johnson’smother?
+
+A:SarahJohnson Q:[Query] C.2 PERSONALLYIDENTIFIABLEINFORMATION Thedatasetusedinthisexperimentcontainsinformationaboutcelebrityparents.
+
+Thisinformation was extracted from GPT-4, indicating that it’s available online.
+
+Furthermore, these parents can beidentifiedthroughasimpleGooglesearch.
+
+Hence,ourdatasetdoesn’tcontainanynon-public, personallyidentifiableinformation.
+
+D EXPERIMENT 3: REVERSING INSTRUCTIONS D.1 LLAMA-1SWEEP WeperformahyperparametersweeponLlama-7b,Llama-13b,andLlama-30bfor5epochs,using batch sizes of 8, 32, 128 and learning rates of 1e-06, 2e-06, 1e-05, 2e-05.
+
+We use Adam as our optimizerandDeepSpeedlevel3formemoryefficiency.
+
+Weperformfullfinetuninganddonotuse anyparameterefficientfinetuningtechniques.
+
+Wechosethesebatchsizestoberelativelylow.
+
+The learningrateswerechosentobeclosetotheonesusedduringthepretrainingoftheLlama-1models (Touvronetal.,2023).
+
+TheresultsforLlama-7bareshowninFigure10.
+
+Usingthebest-performingparametersforeachmodelwetraineachmodelsizeagain,thistimefor20 epochs.
+
+Weusefiveseedsforeachmodelsize.
+
+Againwedonotobserveanyconvergence.
+
+Instead theaccuracyfluctuatesrandomlybetween0and7.
+
+Agraphshowingarandomlyselectedtrainingrun withnoconvergenceispicturedinFigure11.
+
+E COMPUTE COSTS ThesweepsandqueriestotheOpenAIAPIinexperiments1and2costapproximately$100each.
+
+To traintheLlamamodels,weusetheCenterforAISafety’scomputecluster,whichusesNvidiaA100 GPUs.
+
+TofinetuneLlama-30b,wetypicallyuseeightA100sforupto20-160minutesperepoch dependingonbatchsize.
+
+F RELATIONSHIP BETWEEN OUR WORK AND GROSSE ET AL. 2023 AsdiscussedinSection3,Grosseetal.(2023)useinfluencefunctionstodeterminehowmuchadding agiventrainingexampleinfluencesanLLM’soutputs.
+
+Theystudyauto-regressivepretrainedLLMs ofupto52Bparameters.
+
+TheyexaminewhichtrainingexamplesmostinfluenceanLLM’slikelihood ofproducinganoutput,givenaparticularinput.
+
+Forinstance,giventheinputA,whatmostinfluences thelikelihoodofB?Intheirexperiments,trainingexamplesthatmatchtheorder(“AprecedesB”) PublishedasaconferencepaperatICLR2024 1e-06 2e-06 2e-05 0.0002 Learning rate ezis hctaB 1.0 1.0 2.5 2.0 1.0 0.0 1.0 1.0 2 1.0 1.0 3.0 0.0 )%( ycaruccA 1e-06 2e-06 2e-05 0.0002 Learning rate ezis hctaB 13b 1.0 3.0 3.0 2.0 2.0 3.0 5.0 0.5 2 4.0 2.0 3.0 0.0 )%( ycaruccA 1e-06 2e-06 2e-05 0.0002 Learning rate ezis hctaB 30b 3.7 2.0 1.5 0.5 2.0 2.5 3.0 1.0 2 4.0 1.0 3.5 2.0 )%( ycaruccA Figure10: ReverseaccuracyforLlama-1models.
+
+Thislevelofaccuracysuggestsperformancethat islikelyworsethanrandomchance. 0.07 0.06 0.05 0.04 0.03 0.02 0.01 0 2 4 6 8 10 Epoch ycarucca noitadilaV Validation accuracy across epochs Figure11:AccuracyacrosstrainingforLlama-7bontheinstruction-reversaltaskforexperiment arefarmoreinfluentialthanexampleswithreverseorder(“BprecedesA”).Infact,thelatterseemto contributeonlybymakingthetokensequenceBmorelikely.
+
+ForfurtherdiscussionseeAppendixF Theystudythisphenomenonwithfactualandsyntheticprompt-completionpairs,suchas“Thefirst PresidentoftheUnitedStateswasGeorgeWashington”.
+
+Thesepairsareverysimilartothosewe studyinExperiments1and2.
+
+Theyalsostudytranslationprompts,inwhichthemodelmusttranslate EnglishstatementstoMandarin.
+
+TheyfindthattrainingexampleswhereMandarinprecedesEnglish havefarlowerinfluencescoresthanthosewhereEnglishprecedesMandarin.
+
+PublishedasaconferencepaperatICLR2024 Grosseetal.(2023)providecomplementaryevidencefortheReversalCurse.
+
+Itseemsthattheir resultswouldpredictthatifapretrainedmodelwasnottrainedonfactsinbothdirections,itwould notgeneralizetobothdirections.
+
+OurExperiment1testsandconfirmsacloselyrelatedprediction.
+
+G FORWARD VS BACKWARD RECALL IN HUMANS AsdiscussedinSection3,ourfindingsmirrorawell-studiedeffectinhumans,whereinrecallisharder inthebackwarddirectionthanintheforwarddirection(Clair-Thompson&Allen,2013;Thomas etal.,2003;Biretaetal.,2010;Li&Lewandowsky,1995;Guitardetal.,2019).
+
+Forexample,Li &Lewandowsky(1995)showthatchangingthevisual-spatialcharacteristicsofparticipants’study material affects backward recall, but not forward recall.
+
+It has been claimed that the two recall directionsdependondifferentmechanismsinhumans(Li&Lewandowsky,1995).
+
+Additionally, researchonprimatesindicatesthattheyoftenfailtoreversegeneralizationsfromonetemporalorder toanothertemporalorder(vanKerkoerleetal.,2023).
