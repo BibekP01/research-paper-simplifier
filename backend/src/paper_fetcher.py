@@ -52,6 +52,13 @@ class PaperFetcher:
         self.max_results = self.config.get('arxiv', {}).get('max_results', 10)
         self.categories = self.config.get('arxiv', {}).get('categories', ['cs.AI'])
         
+        # Initialize arXiv Client with rate limiting
+        self.client = arxiv.Client(
+            page_size=20,
+            delay_seconds=10.0,
+            num_retries=5
+        )
+        
         # Set up requests session with retry logic
         self.session = self._create_session()
         
@@ -158,7 +165,7 @@ class PaperFetcher:
             )
             
             papers = []
-            for result in search.results():
+            for result in self.client.results(search):
                 paper_data = self._extract_paper_data(result)
                 papers.append(paper_data)
                 logger.debug(f"Found paper: {paper_data['title']}")
@@ -194,7 +201,7 @@ class PaperFetcher:
             search = arxiv.Search(id_list=[clean_id])
             
             # Get the first (and should be only) result
-            result = next(search.results(), None)
+            result = next(self.client.results(search), None)
             
             if result is None:
                 raise ValueError(f"Paper with ID {clean_id} not found")

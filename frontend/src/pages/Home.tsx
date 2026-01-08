@@ -1,43 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, Loader2, AlertCircle } from 'lucide-react';
+import { Search, Upload, ArrowRight } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
-import { uploadFile } from '../services/api';
 
 export function Home() {
     const navigate = useNavigate();
-    const [isUploading, setIsUploading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    const onDrop = async (acceptedFiles: File[]) => {
-        if (acceptedFiles.length === 0) return;
-
-        const file = acceptedFiles[0];
-        setIsUploading(true);
-        setError(null);
-
-        try {
-            const response = await uploadFile(file);
-            // Navigate to chat with the document ID and filename
-            navigate(`/chat/${response.document_id}?filename=${encodeURIComponent(response.filename)}`);
-        } catch (err) {
-            console.error('Upload failed:', err);
-            setError('Failed to upload file. Please try again.');
-        } finally {
-            setIsUploading(false);
-        }
-    };
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            'application/pdf': ['.pdf'],
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
-        },
-        maxFiles: 1,
-        multiple: false
-    });
 
     return (
         <div className="min-h-screen bg-black text-white relative overflow-x-hidden selection:bg-blue-500/30">
@@ -50,59 +16,85 @@ export function Home() {
             <Navbar />
 
             <main className="relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[80vh]">
-                <div className="text-center max-w-3xl mx-auto mb-12 fade-in">
+                <div className="text-center max-w-3xl mx-auto mb-16 fade-in">
                     <h1 className="text-5xl sm:text-6xl font-bold tracking-tight mb-6">
-                        Chat with your <span className="gradient-text">Research</span>
+                        Chat with your <span className="gradient-text">Research Paper</span>
                     </h1>
                     <p className="text-lg sm:text-xl text-slate-400 leading-relaxed mb-8">
-                        Upload a research paper (PDF or DOCX) to start an AI-powered conversation.
+                        Explore research papers from arXiv or upload your own to start an AI-powered conversation.
                     </p>
                 </div>
 
-                {/* Upload Area */}
-                <div
-                    {...getRootProps()}
-                    className={`w-full max-w-2xl p-12 border-2 border-dashed rounded-2xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center gap-4 group
-            ${isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-slate-700 hover:border-blue-500/50 hover:bg-slate-900/50'}
-            ${isUploading ? 'pointer-events-none opacity-50' : ''}
-          `}
-                >
-                    <input {...getInputProps()} />
+                {/* Navigation Cards */}
+                <div className="grid md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    {/* Explore Card */}
+                    <button
+                        onClick={() => navigate('/explore')}
+                        className="group relative p-8 bg-slate-900/30 border-2 border-slate-800 rounded-2xl hover:border-blue-500/50 hover:bg-slate-900/50 transition-all duration-300 text-left overflow-hidden"
+                    >
+                        {/* Gradient Overlay on Hover */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    {isUploading ? (
-                        <>
-                            <Loader2 className="w-16 h-16 text-blue-500 animate-spin" />
-                            <p className="text-xl font-medium text-slate-300">Processing document...</p>
-                            <p className="text-sm text-slate-500">Extracting text, chunking, and indexing.</p>
-                        </>
-                    ) : (
-                        <>
-                            <div className="w-20 h-20 rounded-full bg-slate-800/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <Upload className="w-10 h-10 text-blue-400" />
+                        <div className="relative z-10">
+                            <div className="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Search className="w-8 h-8 text-blue-400" />
                             </div>
-                            <div className="text-center">
-                                <p className="text-xl font-medium text-slate-200 mb-2">
-                                    {isDragActive ? "Drop the file here" : "Drag & drop your paper here"}
-                                </p>
-                                <p className="text-slate-500">
-                                    or click to browse files
-                                </p>
+
+                            <h2 className="text-2xl font-bold text-white mb-3 flex items-center gap-2">
+                                Explore Papers
+                                <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                            </h2>
+
+                            <p className="text-slate-400 mb-4">
+                                Browse and search thousands of research papers from arXiv. Discover the latest in AI, ML, and more.
+                            </p>
+
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-3 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-full">
+                                    arXiv Integration
+                                </span>
+                                <span className="px-3 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-full">
+                                    20+ Categories
+                                </span>
                             </div>
-                            <div className="flex gap-4 mt-4 text-sm text-slate-600">
-                                <span className="flex items-center gap-1"><FileText className="w-4 h-4" /> PDF</span>
-                                <span className="flex items-center gap-1"><FileText className="w-4 h-4" /> DOCX</span>
+                        </div>
+                    </button>
+
+                    {/* Upload Card */}
+                    <button
+                        onClick={() => navigate('/upload')}
+                        className="group relative p-8 bg-slate-900/30 border-2 border-slate-800 rounded-2xl hover:border-purple-500/50 hover:bg-slate-900/50 transition-all duration-300 text-left overflow-hidden"
+                    >
+                        {/* Gradient Overlay on Hover */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                        <div className="relative z-10">
+                            <div className="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <Upload className="w-8 h-8 text-purple-400" />
                             </div>
-                        </>
-                    )}
+
+                            <h2 className="text-2xl font-bold text-white mb-3 flex items-center gap-2">
+                                Upload Paper
+                                <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                            </h2>
+
+                            <p className="text-slate-400 mb-4">
+                                Upload your own research papers in PDF or DOCX format and start asking questions immediately.
+                            </p>
+
+                            <div className="flex flex-wrap gap-2">
+                                <span className="px-3 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-full">
+                                    PDF Support
+                                </span>
+                                <span className="px-3 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-full">
+                                    DOCX Support
+                                </span>
+                            </div>
+                        </div>
+                    </button>
                 </div>
-
-                {error && (
-                    <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-center gap-2 fade-in">
-                        <AlertCircle className="w-5 h-5" />
-                        <p>{error}</p>
-                    </div>
-                )}
             </main>
         </div>
     );
 }
+

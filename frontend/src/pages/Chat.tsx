@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Navbar } from '../components/layout/Navbar';
 import { QuestionInput } from '../components/question/QuestionInput';
 import { AnswerDisplay } from '../components/answer/AnswerDisplay';
 import { LoadingSpinner } from '../components/loading/LoadingSpinner';
-import { chatWithDocument } from '../services/api';
+import { chatWithDocument, getSuggestedQuestions } from '../services/api';
 import type { QAResponse } from '../types';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -22,6 +22,8 @@ export function Chat() {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<QAResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>();
+    const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
     // We assume the filename is available or we fetch it. 
     // For now, we might need to fetch document details or just try to load by ID if we saved it with ID.
@@ -58,6 +60,26 @@ export function Chat() {
             setIsLoading(false);
         }
     };
+
+    // Fetch suggested questions on mount
+    useEffect(() => {
+        if (!documentId) return;
+
+        const fetchSuggestions = async () => {
+            setIsLoadingQuestions(true);
+            try {
+                const response = await getSuggestedQuestions(documentId);
+                setSuggestedQuestions(response.questions);
+            } catch (err) {
+                console.error('Failed to fetch suggestions:', err);
+                // Silently fail - component will use default questions
+            } finally {
+                setIsLoadingQuestions(false);
+            }
+        };
+
+        fetchSuggestions();
+    }, [documentId]);
 
     return (
         <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
@@ -147,6 +169,8 @@ export function Chat() {
                             onSubmit={handleQuestionSubmit}
                             isLoading={isLoading}
                             placeholder="Ask about this paper..."
+                            suggestedQuestions={suggestedQuestions}
+                            isLoadingQuestions={isLoadingQuestions}
                         />
                     </div>
                 </div>

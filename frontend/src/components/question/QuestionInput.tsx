@@ -10,12 +10,16 @@ interface QuestionInputProps {
     onSubmit: (question: string, topK: number) => void;
     isLoading?: boolean;
     placeholder?: string;
+    suggestedQuestions?: string[];
+    isLoadingQuestions?: boolean;
 }
 
 export const QuestionInput: React.FC<QuestionInputProps> = ({
     onSubmit,
     isLoading = false,
-    placeholder = "Ask a question about the research papers..."
+    placeholder = "Ask a question about the research papers...",
+    suggestedQuestions,
+    isLoadingQuestions = false
 }) => {
     const [question, setQuestion] = useState('');
     const [topK, setTopK] = useState(5);
@@ -118,7 +122,11 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
 
             {/* Example Questions */}
             {!isLoading && !question && (
-                <ExampleQuestions onSelect={setQuestion} />
+                <ExampleQuestions
+                    onSelect={setQuestion}
+                    questions={suggestedQuestions}
+                    isLoading={isLoadingQuestions}
+                />
             )}
         </div>
     );
