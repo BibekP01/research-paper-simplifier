@@ -1,0 +1,434 @@
+Title: Abstract Humansarebelievedtoperceivenumbersona logarithmicmentalnumberline,wheresmaller valuesarerepresentedwithgreaterresolution thanlargerones.
+================================================================================
+
+Number Representations in LLMs: A Computational Parallel to Human Perception H.V.AlquBoj∗ HilalAlQuabeh∗1 VeliborBojkovic∗1 TatsuyaHiraoka1 AhmedOumarEl-Shangiti1 MunachisoNwadike1 KentaroInui1,2,3 1 MohamedbinZayedUniversityofArtificialIntelligence(MBZUAI) 2 TohokuUniversity, 3 RIKEN ∗Amalgamationoffirstauthors’names.
+
+Abstract Humansarebelievedtoperceivenumbersona logarithmicmentalnumberline,wheresmaller valuesarerepresentedwithgreaterresolution thanlargerones.
+
+Thiscognitivebias,supported by neuroscience and behavioral studies, sug- Figure 1: Logarthmic mental number line hypothesis geststhatnumericalmagnitudesareprocessed asserts that humans innately percieve numbers on a in a sublinear fashion rather than on a unilogarithmicscale.
+
+Imagesource(Fritzetal.,2013). form linear scale.
+
+Inspired by this hypothesis,weinvestigatewhetherlargelanguagemodels(LLMs)exhibitasimilarlogarithmic-like Tegmark,2024;Godeyetal.,2024).
+
+Similarly,nustructureintheirinternalnumericalrepresen- mericalrepresentationisinfluencedbytokenization tations.
+
+By analyzing how numerical values strategies,withbase-10encodingprovingmoreefare encoded across different layers of LLMs, weapplydimensionalityreductiontechniques ficientfornumericreasoningtasksthanhigher-base suchasPCAandPLSfollowedbygeometric tokenizations(Zhouetal.,2024). regression to uncover latent structures in the Thelinearhypothesisofinternalrepresentations learnedembeddings.
+
+Ourfindingsrevealthat (Park et al., 2023) posits that concepts in LLMs themodel’snumericalrepresentationsexhibit arestructuredwithingeometric,linearsubspaces, sublinearspacing,withdistancesbetweenvalfacilitatinginterpretabilityandmanipulation.
+
+This ues aligning with a logarithmic scale.
+
+This frameworksuggeststhatnumericalpropertiesfolsuggeststhatLLMs,muchlikehumans,may encodenumbersinacompressed,non-uniform lowsystematic,monotonictrends(Heinzerlingand manner12.
+
+Inui, 2024).
+
+As a result, it has been commonly assumedthatnumericalvaluesarerepresentedina 1 Introduction uniformlinearfashion(Zhuetal.,2025).
+
+However, recentprobingstudies(Zhuetal.,2025;Levyand Largelanguagemodels(LLMs)havedemonstrated Geva,2024)challengethisassumption,revealinga impressive capabilities in natural language pronon-uniformencodingofnumbersinLLMs,where cessingtasks(Touvronetal.,2023;Achiametal., precision decreases for larger values.
+
+These find- 2023),yettheirinternalrepresentationsofabstract ings raise questions about how artificial systems concepts, i.e., numbers, space, and time, remain internalizenumericalrepresentations,particularly largely opaque.
+
+Recent research suggests that in relation to the scaling of numbers.
+
+Do LLMs LLMsconstructstructured"worldmodels,"encodpreserve a uniform spacing of numerical values, ing relationships in ways that can be systematiandifnot,whatisthenatureoftheirpositioning? callyanalyzed(Petronietal.,2019;Radfordetal., Suchquestionsnaturallyleadtoaninvestigation 2019).
+
+Forinstance,studieshaveshownthatspaofwhetherLLMsencodenumericalvaluesinaway tialandgeographicalinformationisembeddedin thatmirrorshumancognition,assuggestedbythe low-dimensional subspaces, where model perforlogarithmicmentalnumberlinehypothesis.
+
+This mancecorrelateswithdataexposure(Gurneeand hypothesispositsthathumansperceivenumerical 1Codeisavailableat:https://github.com/halquabeh/ magnitudes nonlinearly, following a logarithmic llm_natural_log rather than a uniform linear scale (see Figure 1). 2Correspondence:{hilal.alquabeh,velibor.bojkovic,kentaro.inui}@mbzuai.ac.ae RootedinpsychophysicalstudiesliketheFechnerbeF ]LC.sc[ 1v74161.2052:viXra Weber law, this idea is supported by behavioral magnitudes in LLMs are not evenly spaced experimentsshowingthatyoungchildrenandindibutfollowastructuredcompressionpattern. vidualswithlimitedformaleducationtendtomap numberslogarithmicallywhenplacingthemona 2 RelatedWorks spatialaxis(Fechner,1860;Dehaene,2003;Siegler and Opfer, 2003).
+
+While formal training shifts Linearity of internal representations (Park et al., numerical perception toward a more linear scale, 2023)hasbeenacentralassumptioninexistingrelogarithmic encoding persists in tasks involving search, suggesting that language models encode estimationandlarge-numberprocessing(Dehaene numerical values in a linear manner.
+
+However, etal.,2008;Moelleretal.,2009).
+
+Zhuetal.(2025)presentamorenuancedperspec- Inspiredbythis,weinvestigatewhetherLLMs tive.
+
+Their analysis of partial number encoding encode numerical values in a manner analogous (AppendixF)showsthatprobingaccuracydeclines tothehumanlogarithmicmentalnumberline.
+
+By assequencelengthincreases,withgreaterdifficulty analyzinghiddenrepresentationsacrossmodellayin capturing precise values at larger scales, a paters,weexaminethegeometricstructureofnumertern reminiscent of logarithmic encoding, where icalmagnitudesandtheirunderlyingtrends.
+
+Our resolutionishigherforsmallernumbers.
+
+Someof approach first employs dimensionality reduction theconclusionsinZhuetal.(2025)arethatLLMs techniques,includingPrincipalComponentAnalencodenumericalvaluesintheirhiddenrepresenta- ysis (PCA) and Partial Least Squares (PLS), to tions,yetlinearprobesfailtopreciselyreconstruct transform the hidden representations onto a onethesevalues,asdiscussedinZhuetal.(2025,Secdimensionalnumberline,thatbestfitsitsdominant tion 3.1).
+
+The authors there suggest that “This numericalfeatures.
+
+Second,usingSpearmanrank phenomenon may indicate that language models coefficientandgeometricnon-linearregression,we use stronger non-linear encoding systems”.
+
+Our specificallytestwhethertwokeypropertiesremifindingssupportthisclaimandfurtheruncoverthe niscentofhumannumericalcognition(orderpreserunderlyingnatureofthisnon-linearity. vationinrepresentationsandacompressioneffect Recent studies such as Levy and Geva (2024); wheredistancesbetweenconsecutivenumbersde- Zhou et al. (2024) show that LLMs rely on basecreaseasvaluesincrease)emergeinLLMs. 10digit-wiserepresentationsratherthanencoding WhilebothPCAandPLSrevealthatnumerical numbersinacontinuouslinearspace,asrevealed representationslargelyresideinalinearsubspace, through circular probing techniques.
+
+While indionly PCA captures systematic sublinearity, sugvidual digits are accurately reconstructed, perforgesting that simple linear probes3 may overlook mance declines for larger numbers, suggesting a theunderlyingnon-uniformityinLLMs’numerical structured rather than holistic encoding.
+
+Furtherencoding. more, Zhou et al. (2024) demonstrate that LLMs trained on higher-base numeral systems struggle Contributions Wesummarizeourmainfinding withnumericalextrapolation,implyinganimplicit inthefollowing: compressed representation where smaller values have finer granularity-consistent with logarith- • We introduce a methodology for analyzing micscaling.
+
+Collectively,theseresultsalignwith thegeometricstructureofnumberrepresentaandfurthersubstantiatethehypothesisthatLLMs tions,offeringasystematicapproachtostudyinternallyrepresentnumbersinanon-uniform,subingnumericalabstractionsinartificialneural linearmanner. networks.
+
+Logarithmic functions can appear linear over small local intervals, which may explain why • WeprovideempiricalevidencethatLLMsen- LLMs are often assumed to represent numbers codenumericalvaluesinastructuredyetnonlinearly.
+
+Consequently, methods like PLS regresuniform way, revealing systematic compressionandactivationpatching(HeinzerlingandInui, sion reminiscent of the human logarithmic 2024;El-Shangitietal.,2024),whichanalyzesmall mental number line.
+
+Our findings refine the activationvariations,maycapturelocalmonotoniclinearhypothesisbyshowingthatnumerical ity while missing the global nonlinear structure.
+
+Thissuggeststhatreportedlineareffectscouldstem 3PLSisalinearprobethatprojectsinputdataontoalowerdimensionalsubspace,maximizingcovariancewiththetarget. fromanalyzingnarrownumericalranges,whereas Model Numbers Prompts Layer 1 Layer 2 Layer M Outputs 1000 2107=2107, 14=14, 708=708, 1000= 100 11=11, 10010=10010, 3102=3102, 100= ... 100 10 2=2, 1078=1078, 132=132, 10= PCA PCA PCA Figure2: Theoverallgraphicalrepresentationofourmethod.
+
+Numbersarepassedtothemodelinformofaprompt andtheinternalrepresentationsarecapturedfromtheembeddingscorrespondingtotoken’=’.
+
+Ateverylayer,we performPCAprojectionsontooneandtwodimensionalsubspacesandpickalayerwithhighestexplainedvariance (σ2)scoretofurtheranalyzemonotonicityandscalingofnumberrepresentations. a broader examination may reveal an underlying numericalvaluesalonganumberlineorexhibits logarithmicrepresentation. cognitive-likepatterns,suchassublinearscaling.
+
+Finally, we also emphasize the difference be- Ourgoalistostudythepropertiesofthefunc- tween our work and prior studies on numerical tionf LLM ,whichservesasacounterpartofthe reasoning (Park et al., 2022; Zhang et al., 2020) humancognitivemappingf H describedabove. whichevaluatemodels’abilitytoprocessexplicit Specifically,weexaminewhetherf LLM preserves numbersratherthanprobingtheirinternalrepresenthenaturalorderingofnumbersandhowittrans- tations.
+
+WhileParketal.(2022)focusontaskslike formstheirmagnitudes. unit conversion and range detection, Zhang et al. 3.2 Definitionoff (2020)examinenumericalmagnitudeincommon LLM sense reasoning.
+
+Unlike these works, our study Toanalyzethestructureofhiddenrepresentations, investigatesthespatialstructureofnumericalrepwe apply a projection T : Rd → Rp, p = 1,2, resentationswithinhiddenstatesandhowthisenobtainedfromtechniquessuchasPrincipalCom- codinggeneralizesacrossscales. ponent Analysis (PCA) or Partial Least Squares (PLS).Then,ourfunctionisgivenby 3 Methodology f (x) := T(f(x)), (1) LLM 3.1 Generalsettup wheref isamapbetweentheinputnumberandthe correspondinginternalrepresentationinthemodel The logarithmic mental number line hypothesis (seeSections4and5howf isdefinedinvarious (Dehaene et al., 2008) suggests that humans insettings). nately perceive numerical magnitudes on a loga- For any two inputs x,y ∈ X, we define the rithmic scale rather than a linear one.
+
+Formally, distance between their projections following the if we denote the internal mapping of numbers to mappingT usingEuclideannormas theircognitiverepresentationasf ,thehypothesis H assertsthatf isapproximatelylogarithmic.
+
+While H d(x,y) = ||f (x)−f (y)||. (2) LLM LLM the exact nature of f remains elusive, we adopt H theguidingprinciplef ≡ loginourexperiments. 3.3 AbstractNumberLineandMonotonicity H Metric Ontheotherside,Largelanguagemodels,like LLaMA-2, process inputs by mapping them into If the projection dimension is p = 1, onea high-dimensional representation space, where dimensionalembeddingofnumericalinputsforms each input x (e.g., a number) is transformed into a number line if the projections preserve monoan internal representation f(x) ∈ Rd.
+
+Analyzing tonicity (resp. reverse monotonicity), i.e., for thegeometryoftheserepresentationsacrossaset x < x (resp. x > x ), we have f (x ) < 1 2 1 2 LLM 1 of inputs X can reveal how the model organizes f (x ).Thisensuresthatthenaturalorderofnu- LLM 2 and reasons about them, shedding light on emermericalvaluesismaintainedintherepresentation gentpropertiessuchaswhetherthemodelencodes space.
+
+Tomeasuremonotonicitypropertiesofthefunc- Finally, β < 1 implies that the difference betion f we use Spearman rank correlation that tweenconsecutivemembersissteadilydecreasing, LLM we briefly describe next.
+
+Let X,Y ∈ Rn be two x −x isexpectedtobegreaterthanx −x . i+1 i i+2 i+1 real n-dimensional vectors and let R(X) (resp.
+
+Suchsequencesarecommonlyknownasconcave R(Y)) denote an n-dimensional vector obtained sequences(Rockafellar,2015),andthegrowthof fromX (resp.
+
+Y)wheretheentriesaresubstituted the sequence is exponentially decreasing (sublinwith their ranks in the sequence of sorted entries ear).
+
+An example of such a sequence is given by ofX (resp.
+
+Y).
+
+Then,Spearmanrankcorrelation x = 1− 1 ,withα = 9andβ = 1 . i 10i 10 coefficients(usuallydenotedbyρ)isgivenby: 4 Experiment1: Identifyingnumberline Cov(R(X),R(Y)) ρ = , (3) usingcontextualizednumbers σ(R(x))·σ(R(Y)) Setup.
+
+Tosystematically probethe model’s nuwhere Cov(R(X),R(Y)) is the covariance bemericalrepresentations,wepartitionnumbersinto tween rank vectors R(X) and R(Y), while logarithmicallyspacedgroups: σ(R(X)) and σ(R(Y)) are their respective standarddeviations.
+
+G = {1,2,...,20}, Spearmancoefficientρisanonparametricmea- (5) G = {10i−19,...,10i+20}, i ≥ 2. sureforthealignmentofthetwovectors.
+
+Loosely i+1 speaking,thecoefficientassessesiftheincrement Thesegroupsensurethatlargergroupindicescorinonevariablecorrespondstotheincrease(orderespondtonumericalmagnitudesthatincreaseex- crease)oftheother.
+
+Inparticular,unlikePearson ponentiallywithindex,reflectingthelogarithmic coefficient which takes into account the value of natureofthementalnumberlinehypothesis. thechanges,Spearman’sρtakesintoaccountonly Toanalyzetheembeddingsofnumbers,toevery thesignofthechanges. numberx ∈ G weassignthefollowingprompt: i 3.4 ScalingRateIndex x ← a=a, b=b, c=c, x= (6) For a monotonically increasing sequence of positive real numbers x ,...,x , we introduce the 1 n wherea, b, and carerandomlygeneratednum- Scaling Rate Index to measure the rate at which bers from the groups G .
+
+This prompt structure numbers grow in magnitude.
+
+More precisely, we i is designed to provide the model with contextual seekforpositiverealconstantsαandβ thatminiexamples,encouragingittoinvokethenumberx mizethefollowingobjectivefunction: inmodel’shiddenstatesrepresentations(seeFign−1 ure 2).
+
+Such approaches have been used in prior (cid:88) |(x −x )−α·βi|2. (4) i+1 i work to probe contextual representations in lani=1 guagemodelsSrivastavaetal.(2024).
+
+In particular, if β > 1, the difference between The hidden state representation f(x) ∈ Rd is twoconsecutivemembersx andx isexpected extractedfromadesignatedlayerofthemodelfrom i i+1 to increase with i.
+
+In other words, x − x is thelasttokenintheprompt,e.g. the‘=‘token.
+
+We i+1 i expectedtobesmallerthanx −x .
+
+Suchseuseonlythosexforwhichthegeneratedoutputof i+2 i+1 quencesarecommonlyknownasconvexsequences themodelisxitself. (Rockafellar,2015)andthegrowthofx isexpo- To ensure a representative sampling, we rani nential (superlinear) in i.
+
+An example of such a domlyselectknumbersfromeachgroupG .
+
+These i sequencethatisrelevanttoourstudyisthatdefined sampled numbers collectively form a dataset, dewithx := 10i.
+
+Then,x −x = 9·10i andwe noted as X, which serves as the basis for our i i+1 i cantakeα = 9andβ = 10. analysis.
+
+The set of hidden state representations, If β = 1, expression (4) indicates that the dif- {f(x)} ,isthenaggregatedandanalyzedtoinx∈X ferencebetweentwoconsecutivemembersx and vestigatepatternsandpropertiesintheembedding i x isapproximatelyconstant,i.e. thesequence space. i+1 is approximately linearly increasing.
+
+For exam- Tocontrolforpotentialbiasesintroducedbyto- ple,onemaytakethesequencex := i,forwhich kenization(wherelargernumbersoftenspanmore i α = 1 = β. tokens)weconductacomplementaryexperiment usingnon-numericalsequences.
+
+Insteadofnumericalinputs,weconstructsequencesofrandomletf ̄ (i) = E [f (x)], (7) LLM LLM ters with lengths corresponding to the tokenized x∈Gi representationsofnumbers.
+
+Thelettersequences and fit positive constants α and β such that are grouped to their lengths so that the grouping f ̄ (i) ≈ α·βi.
+
+LLM approximatelymatchesoneofthenumbers,andthe Inparticular,themapping promptscorrespondingtospecificlettersequences aredesignedinasimilarfashionasforthenumbers 10i (cid:55)→ f ̄ (i) (8) LLM (6).
+
+Thissettingallowsustocompareanyobserved structuralpatternsbetweenthenumberrepresentaallowsustoexaminehowdoesf LLM scalesnumeritions and letter representations.
+
+By doing so, we calmagnitudes.
+
+Thefundamentalquestionweseek candeterminewhetherthemodeltrulyencodesnutoansweris: Whatisthenatureofthefunction mericalmagnitudeorifitissimplyrespondingto f LLM (logarithmic,linear,orexponential)? surface-levelfeaturesoftheinput.
+
+Toanswerthisquestion,weanalyzethescaling factor β in the fitted exponential model4.
+
+In the Motivation.
+
+The goal of this experiment is following, we explain how different values of β twofold.
+
+We first investigate whether LLMs encorrespondtotheunderlyingpropertiesoff LLM . code numerical values in context along a mono- •Ifβ > 1,thesequencef ̄ LLM (i)isconvexand tonic number line in their internal representation exponentiallyincreasing.
+
+Thismeansf LLM maps space.
+
+Second,wetestwhetherthisnumberlineexan exponentially increasing sequence to another hibitssublinearscaling,similartohumancognitive exponentiallyincreasingsequence: representationsofnumbers. 9·10i (cid:55)→ α·βi = α·10(log 10 β)·i.
+
+Methodology.
+
+Forthesepurposes,weuse: Thus,f preservestheoriginalspacingofnum- LLM •PCAnadPLS.Afterthesetofhiddenstatereprebers,albeitwithascalingfactorlog β > 0. sentationsisaggregated,wefurtherprojectitinto • If β = 1, the sequence f ̄ (i) is linearly LLM aone-dimensionalspaceusingPCAorPLSmethincreasing,meaningf takestheform: LLM ods.
+
+In particular, for PLS we take the numbers themselves to form the target vectors, while for 10i (cid:55)→ α·i = α·log 10i. letters,weconsiderthelettersequenceasabase26 representationofanumber(withrandombutfixed Inthiscase,f LLM exhibitslogarithmicscaling. assignment of values to the letters), and use this • If β < 1, the sequence f ̄ LLM (i) is concave, numberasthecorrespondingtarget. exponentiallydecaying.
+
+Here,f LLM follows: •Monotonicitymetric.
+
+Weapplyitonasequence 10i (cid:55)→ α·βi = α·10 −(log 10 β 1)·i . x ,...,x of all the numbers in the union of 1 n groupsG j definedin(5),andtheirrespectivepro- Thusf isasub-logarithmicmapping.
+
+LLM jectionsf (x ),...,f (x ).
+
+Spearmanrank LLM 1 LLM n coefficientwilltelluswhetherthemodelpreserves Results.
+
+Theresultsrevealdistinctyetconsistent naturalorderingofthenumbers. patternsinhowdifferentmodelsencodenumerical andalphabeticalstructures,withvariationsacross • Scaling Rate Index.
+
+The initial centers of G , i layers (Tables 1 and 2).
+
+Despite these variations, given by x = 10i, form a convex, exponeni similar trends emerge across the models, leading tiallygrowingsequencecharacterizedbyparametoconsistentconclusionsabouttheirprocessingof ters α = 9 and β = 10.
+
+These numbers serve as numerical values (please refer to appendix A for representative scales of the numbers within each experimentaldetails). group.
+
+Numericalvs.
+
+SymbolicRepresentations.
+
+First Toobtainarobustestimateofhowthesescales key finding is that numerical embeddings exare preserved in the projections under f , we LLM hibit a significantly higher explained variance compute the expectation of projections in each group.
+
+Specifically, for SRI analysis, we define 4Wecandisregardαfromtheanalysissinceitdoesnot thesequence influencethescalingbutmerelyintroducesabias.
+
+Model Group Layer ρ±std β±std σ2±std Numbers 3 0.97±0.00 0.83±0.06 0.60±0.01 LLaMA-2-7B Letters 1 0.45±0.00 1.21±0.00 0.24±0.00 Numbers 8 0.94±0.01 0.54±0.01 0.31±0.01 Pythia-2.8B Letters 11 0.89±0.01 0.53±0.10 0.16±0.01 Numbers 18 0.95±0.00 0.58±0.02 0.32±0.00 GPT-2-L Letters 5 0.11±0.05 0.80±0.42 0.21±0.01 Numbers 3 0.96±0.00 1.05±0.00 0.44±0.00 Mistral-7B Letters 14 0.89±0.00 0.60±0.00 0.22±0.00 Numbers 1 0.41±0.04 1.14±0.05 0.48±0.01 LLaMA-3.1-8B Letters 1 0.56±0.00 0.16±0.07 0.19±0.01 Numbers 4 0.93±0.02 1.33±0.12 0.35±0.01 LLaMA-3.2-Instruct-1B Letters 1 0.57±0.06 0.47±0.08 0.17±0.00 Table1:ComparisonofseveralmodelsonNumbersand Lettersgroups,evaluatedusingthreemetrics: ρ,β,and ExplainedVariance(σ2).
+
+Resultsarereportedforthe layerwiththehighestσ2score.
+
+Standarddeviationsare included.
+
+Model Group Layer ρ±std β±std R2±std Numbers 6 0.91±0.00 1.93±0.05 0.68±0.01 Llama-3.2-1B-Instruct Letters 10 0.93±0.00 0.97±0.03 0.45±0.03 Numbers 1 0.78±0.02 4.65±1.32 0.71±0.01 Pythia-2.8b Letters 20 0.90±0.01 0.95±0.11 0.46±0.04 Numbers 17 0.96±0.01 1.15±0.09 0.67±0.03 GPT2-L Letters 33 0.81±0.03 0.93±0.04 0.44±0.01 Numbers 5 0.93±0.00 2.62±0.00 0.81±0.00 Llama-2-7b Letters 27 0.88±0.03 0.91±0.02 0.45±0.01 Numbers 7 0.88±0.00 14.87±8.28 0.81±0.00 Mistral-7B-v0.1 Letters 29 0.86±0.00 1.62±0.00 0.63±0.00 Numbers 4 0.93±0.01 2.00±0.01 0.73±0.01 Llama-3.1-8B Letters 16 0.93±0.01 0.88±0.06 0.45±0.02 Table2:ComparisonofseveralmodelsonNumbersand Lettersgroups,evaluatedusingthreemetrics: ρ,β,and R2.
+
+Resultsarereportedforthelayerwiththehighest R2.
+
+Standarddeviationsareincluded. 0.8 0.6 0.4 0.2 0.0 0 5 10 15 20 25 30 35 Layer , VE GPT2-L Left Y-axis 2 Right Y-axis 1.6 1.0 1.4 0.8 1.2 1.0 0.6 0.8 0.6 0.4 0.4 0.2 0.2 0 5 10 15 20 25 30 Layer , VE Llama-2.7B Left Y-axis 2 Right Y-axis 3 3 . . 0 5 2.5 2.0 1.5 1.0 0.5 0.0 1.0 0.8 0.6 0.4 0.2 0 5 10 15 20 25 30 Layer , VE Pythia-2.8B Left Y-axis 2 Right Y-axis 1.8 1.0 1.6 0.8 1.4 1.2 0.6 1.0 0.4 0.8 0.2 0.6 0 5 10 15 20 25 30 Layer , VE 0 1 2 3 4 log10(x) Mistral-7B Left Y-axis 2 Right Y-axis 1.0 0.8 0.6 0.4 0.2 Figure3: Layer-wiseanalysisoffourmodelsonnumerical groups, showing explained variance (σ2), monotonicity(ρ),andScalingRateIndex(β).
+
+Thelayerwith maximumσ2alignswithpeakρ,indicatingoptimalnumericalencoding. (σ2 in Table 1 and R2 in Table 2) in the one- )x(T Pythia-2.8B =0.96, =0.52 1 2 3 4 log10(x) )x(T GPT2-L =0.95, =0.57 0.5 0.0 0.5 1.0 1 2 3 4 log10(x) )x(T Llama-2.7B =0.97, =0.78 0.10 0.05 0.00 0.05 0.10 0 1 2 3 4 log10(x) )x(T Mistral-7B =0.97, =1.12 Figure4: Projectionsofnumericalrepresentations(yaxis) against their log-scaled magnitudes (x-axis) for the layer with the highest explained variance in four models.
+
+Sublinearityandmonotonicity(ρ)areindicated aboveeachsubfigure,demonstratingconsistentsublinear trends and strong monotonic relationships across models. dimensional PCA and PLS transformations comparedtoletter-basedembeddings(refertoMethodology).
+
+Thissuggeststhatnumbersnaturallyalign alongaone-dimensionalmanifold-akintoanumberline-whilerandomsequencesoflettersdonot displaythesamestructuredbehavior.
+
+Furthermore,themonotonicitymetric(ρ)consistentlyshowshighervaluesfornumericaldata,with mostmodelsachievingρ > 0.9inbothPCAand PLSanalyses.
+
+Thissupportstheideathatnumericalrepresentationsarenotonlystructured,butalso maintainawell-orderedprogressionacrosslayers.
+
+The resulting projections obtained using PCA forthenumericalandlettersgroupsarevisualized inFigures4and5,respectively.
+
+Sublinearity in Numerical Representations.
+
+Thesublinearitycoefficient(β)derivedfromPCA projectionsrevealsnotabledifferencesacrossmodels.
+
+Some,suchasLLaMA-2-7B,Pythia,andGPT- 2Large,exhibitstrongsublinear(sublogarithmic) scaling with β < 1, indicating that embedding distances grow at a diminishing rate.
+
+In contrast, modelslikeMistralshowanearlylogarithmictrend (β ≈ 1),whileothersapproachamorelinearspacingpatternwithhigherβ values.
+
+Layer-Wise Dynamics.
+
+Since Table 1 reports values from the layer with the highest explained variance,interpretationrequirescaution-otherlay- 0 2 4 log10(x) )x(T Pythia-2.8B =0.89, =0.53 2 4 log10(x) )x(T GPT2-L =0.11, =0.80 0.2 0.1 0.0 0.1 0.2 0 2 4 log10(x) )x(T Llama-2.7B =0.45, =1.21 0 2 4 log10(x) )x(T capturethetruegeometricorganizationofnumerical representations, especially in regimes where non-lineareffectsdominate.
+
+Ablationstudy.
+
+Finally,weperformanablation studytoexaminethedependenceofourresultson thenumberofexamplesinthepromptforbothnumericalandalphabeticaldatasets.
+
+Figure6shows Mistral-7B =0.89, =0.60 thatthemetricsexhibitgreaterstabilityfornumericaldatacomparedtoalphabeticaldata,indicating that the model processes numerical information more consistently, while alphabetical representationsaremoresensitivetopromptvariations.
+
+Figure5: Projectionsoflettersrepresentations(y-axis) 0.9 against their log-scaled magnitudes (x-axis) assigned proportionaltotheirlength,forthelayerwiththehighest 0.8 explained variance in four models.
+
+Sublinearity and 0.7 monotonicity (ρ) are indicated above each subfigure, demonstrating consistent sublinear trends and strong 0.6 20 25 30 35 40 monotonicrelationshipsacrossmodels.
+
+Number of Samples erswithcomparableσ2 valuesmayexhibitsimilar trends.
+
+Figure 3 provides a layer-wise analysis for four models, demonstrating how sublinearity evolvesacrossdifferentdepths.
+
+PCA vs PLS.
+
+The PLS method achieves high monotonicity(ρ)andexplainedvariance(R2)but exhibitslowersublinearitycomparedtoPCA.This discrepancy arises because PLS operates as a supervisedlinearprobe,wheretheregressiontarget (e.g.,numericalvalues)directlyinfluencestheprojection.
+
+Thisprocessdistortstheintrinsicspacing betweenpoints,asPLSprioritizesmaximizingcovariancewiththetargetoverpreservingtheoriginal geometricstructure.
+
+Incontrast,PCA,beingunsupervised,retainstherelativespacingofdatapoints inthelatentspace,bettercapturingtheunderlying sublinear trends.
+
+This distinction is evident in tables 1 and 2: PCA consistently reveals stronger sublinearity,whilePLSachieveshigherR2 andρ byaligningtheprojectionwiththetargetvariable.
+
+Notably, this aligns with findings in Zhu et al. (2025), where a linear probe failed to adequately capturethenon-linearscalingofhiddenstates,particularly for larger numbers, where non-linearity becomes more pronounced.
+
+Our work explicitly quantifysublinearityusingtheScalingRateIndex (SRI,β),whichdirectlymeasurestherateofscaling in the latent space.
+
+This allows us to better eulaV cirteM Numerics PCA Symbols PCA 2 1.2 1.0 0.8 0.6 0.4 0.2 20 25 30 35 40 Number of Samples 1.0 0.9 0.8 0.7 0.6 1 2 3 4 Number of Examples eulaV cirteM Numerics PCA Symbols PCA 2.5 2.0 1.5 1.0 0.5 1 2 3 4 Number of Examples Figure6:Toprow:Changeinmetricswithrespecttothe numberofsamplesinthesetX.
+
+Bottomrow: Change inmetricswithrespecttothenumberofin-contextexamplesintheprompt.
+
+Leftcolumncorrespondstothe numbersgroup,andtherightcolumncorrespondsto thelettersgroup.
+
+Sublinearityandmonotonicitytrends arehighlightedforeachcase. 5 Experiment2: Identifyingnumberline usingreal-worldtasks Setup.
+
+Inthepreviousexperiment(Section4)we createdanartificialexperimentalsettingtotestour hypothesis.
+
+Inthisexperiment,however,wewant tofurthervalidateourhypothesisusingreal-world data.
+
+We collect names of celebrities along with theirbirthyearsandpopulationofdifferentcities/- countriesfromWikidata(Vrandecˇic ́ andKrötzsch, 2014).
+
+The task here is to investigate for similar patternsandobservationsseeninthepreviousexperiment.
+
+Motivation.
+
+ThegoalofthisexperimentistoinvestigatehowLLMsinternallyrepresentnumerical valuesinreal-worldcontexts,specificallyfocusing dataset. onthemonotonicityandscalingoftheserepresentations.
+
+Byanalyzingthehiddenstates,weaimto 20 uncoverwhetherthemodelsencodenumericalin- 10 0 formationinastructuredandinterpretablemanner. 20 Methodology.
+
+The experimental setup for this experimentisasfollows: 20 0 20 40 Component 1 •PromptingtheModel: Wepromptthemodel to provide the exact birth year or population size for each entity in our dataset, which consists of 1K samples.An example of a prompt would be “Whatisthepopulationof[country]?” •CollectingModelOutputs: WecollecttheLLM’soutput answers,andfilteroutnon-numericalandincorrect responses. • Extracting Hidden States: We extract the hidden state corresponding to the question mark tokenateachmodellayer5. •TrainingPLSModels: Wetrainone-andtwocomponent PLS models on the extracted hidden statestopredictthebirthyearsorpopulationsizes of the entities.
+
+This is performed for two LLMs: Llama-3.1-8BandLlama-3.2-1B.
+
+Results.
+
+Theresults,asshownintable3,demonstrateacleardistinctionbetweenthetwotasks,but alsobetweenthemodels.
+
+For the birth year task, model Llama-3.1-8B exhibit strong trends, with high monotonicity (ρ) and (R2), while having low SRI (β), hence high compression.
+
+Thisindicatesthattheinternalrepresentationsofbirthyearsarewell-structuredandpredictive,aligningwithourexpectationsfornumericalencodinginLLMs.
+
+Ontheotherside,Llama- 3.2-1B)showslowmonotonicityscore,hencethe β factor is not informative.
+
+We attribute the low monotonicityscoretothenon-structuredinternal representationsoflowerbirthyears,ascanbeseen inFigure7.
+
+For the population size task, both models displayweakermonotonicityandlowerR2,suggesting population sizes are encoded less systematically.
+
+Unlike birth years, population figures are morecontext-dependent,influencedbygeopoliticalchanges,reportinginconsistencies,andapproximate expressions in text.
+
+Consequently, the low monotonicitymakesthescalingratioβ unreliable.
+
+FinallyFigure7showstheexamplesofoneand twoPLSprojectionsfortwomodels,forbirth-year 5We divided the hidden states into four equally sized groups,rangingfromtheminimumtothemaximumanswers, tofacilitatethecalculationoftheScalingRateIndex(SRI). tnenopmoC Layer 30 htriB 0 200 400 600 800 1000 Sample Index tnenopmoC Layer 29 htriB 20 0 20 40 60 Component 1 tnenopmoC Layer 12 htriB 0 200 400 600 800 1000 Sample Index tnenopmoC Layer 12 htriB Figure7:VisualizationofPLSmodelstrainedonLlama- 3.1-8B(toprow)andLlama-3.2-1B(bottomrow)model activationstopredictentities’birthyearsusingoneand twodimensionalPLSrespectively.
+
+EachsubfigurerepresentsthelayerwiththehighestR2scoreforone-and two-componentPLSmodels.
+
+Model Dataset Layer ρ β R2 Birth 29 0.84 0.50 0.63 Llamba3.18B Population 9 0.63 2.48 0.08 Birth 12 0.03 0.72 0.61 Llamba3.21B Population 10 0.62 2.69 0.10 Table3: Resultsfor Llambamodels evaluated onthe BirthandPopulationdatasets.
+
+Resultsarereportedfor thelayerwiththehighestR2,highlightingtherelationship between scaling rate (β), monotonicity (ρ), and modelperformance. 6 Conclusion Inspiredbythelogarithmiccompressioninhuman numericalcognition,weinvestigatewhetherLLMs encodenumericalvaluesanalogously.
+
+Byanalyzinghiddenstatesacrosslayers,weemploydimensionalityreductiontechniques(PCAandPLS)and geometricregressiontotestfortwokeyproperties: (1) order preservation and (2) sublinear compression, where distances between consecutive numbersdecreaseasvaluesincrease.
+
+Ourresultsreveal that while both PCA and PLS identify numerical representationsinalinearsubspace,onlyPCAcapturessystematicsublinearity.
+
+ThisindicatesthatlinearprobeslikePLS,whichoptimizeforcovariance with the target, may obscure the underlying nonuniformstructure.
+
+OurfindingssuggestthatLLMs encodenumericalvalueswithstructuredcompression, akin to the human mental number line, but thisisonlydetectablethroughmethodslikePCA Kiho Park, Yo Joong Choe, and Victor Veitch. 2023. thatpreservegeometricrelationships.
+
+The linear representation hypothesis and the geometry of large language models. arXiv preprint arXiv:2311.03658.
+
+References SungjinPark,SeungwooRyu,andEdwardChoi.2022.
+
+Do language models understand measurements?
+
+JoshAchiam,StevenAdler,SandhiniAgarwal,Lama Preprint,arXiv:2210.12694.
+
+Ahmad, Ilge Akkaya, Florencia Leoni Aleman, DiogoAlmeida,JankoAltenschmidt,SamAltman, Fabio Petroni, Tim Rocktäschel, Sebastian Riedel, ShyamalAnadkat,etal.2023.
+
+Gpt-4technicalreport.
+
+Patrick Lewis, Anton Bakhtin, Yuxiang Wu, and arXivpreprintarXiv:2303.08774.
+
+AlexanderMiller.2019.
+
+Languagemodelsasknowledge bases?
+
+In Proceedings of the 2019 Confer- Stanislas Dehaene. 2003.
+
+The neural basis of the enceonEmpiricalMethodsinNaturalLanguageProweber-fechner law: a logarithmic mental number cessingandthe9thInternationalJointConference line.
+
+Trendsincognitivesciences,7(4):145-147. onNaturalLanguageProcessing(EMNLP-IJCNLP), pages2463-2473.
+
+StanislasDehaene,VéroniqueIzard,ElizabethSpelke, andPierrePica.2008.
+
+Logorlinear? distinctintu- AlecRadford,JeffreyWu,RewonChild,DavidLuan, itionsofthenumberscaleinwesternandamazonian DarioAmodei,IlyaSutskever,etal.2019.
+
+Language indigenecultures. science,320(5880):1217-1220. modelsareunsupervisedmultitasklearners.
+
+OpenAI blog,1(8):9.
+
+Ahmed Oumar El-Shangiti, Tatsuya Hiraoka, Hilal AlQuabeh,BenjaminHeinzerling,andKentaroInui.
+
+Ralph Tyrell Rockafellar. 2015.
+
+Convex analysis. 2024.
+
+The geometry ofnumerical reasoning: Lan- Princetonuniversitypress. guagemodelscomparenumericpropertiesinlinear RobertSSieglerandJohnEOpfer.2003.
+
+Thedevelopsubspaces.
+
+Preprint,arXiv:2410.13194. mentofnumericalestimation: Evidenceformultiple representationsofnumericalquantity.
+
+Psychological Gustav Theodor Fechner. 1860.
+
+Elemente der psyscience,14(3):237-250. chophysik,volume2.
+
+Breitkopfu.Härtel.
+
+PragyaSrivastava,SatvikGolechha,AmitDeshpande, AnnemarieFritz,AntjeEhlert,andLarsBalzer.2013. and Amit Sharma. 2024.
+
+NICE: To optimize in- Developmentofmathematicalconceptsasbasisfor contextexamplesornot?
+
+InProceedingsofthe62nd an elaborated mathematical understanding.
+
+South AnnualMeetingoftheAssociationforComputational AfricanJournalofChildhoodEducation,3(1):38-67.
+
+Linguistics (Volume 1: Long Papers), pages 5494- 5510,Bangkok,Thailand.AssociationforComputa- NathanGodey, ÉricVillemonteDeLaClergerie, and tionalLinguistics.
+
+Benoît Sagot. 2024.
+
+On the scaling laws of geographicalrepresentationinlanguagemodels.
+
+InPro- HugoTouvron,ThibautLavril,GautierIzacard,Xavier ceedingsofthe2024JointInternationalConference Martinet,Marie-AnneLachaux,TimothéeLacroix, onComputationalLinguistics,LanguageResources Baptiste Rozière, Naman Goyal, Eric Hambro, andEvaluation(LREC-COLING2024),pages12416- Faisal Azhar, et al. 2023.
+
+Llama: Open and effi- 12422. cient foundation language models. arXiv preprint arXiv:2302.13971.
+
+WesGurneeandMaxTegmark.2024.
+
+Languagemodelsrepresentspaceandtime.
+
+InTheTwelfthInterna- DennyVrandecˇic ́ andMarkusKrötzsch.2014.
+
+WikitionalConferenceonLearningRepresentations. data: Afreecollaborativeknowledgebase.
+
+CommunicationsoftheACM,57:78-85.
+
+BenjaminHeinzerlingandKentaroInui.2024.
+
+Mono- Xikun Zhang, Deepak Ramachandran, Ian Tenney, tonic representation of numeric properties in lan- Yanai Elazar, and Dan Roth. 2020.
+
+Do language guagemodels. arXivpreprintarXiv:2403.10381. embeddingscapturescales?
+
+InProceedingsofthe ThirdBlackboxNLPWorkshoponAnalyzingandIn- FengqingJiang.2024.
+
+IdentifyingandmitigatingvulterpretingNeuralNetworksforNLP,pages292-299. nerabilitiesinllm-integratedapplications.
+
+Master’s thesis,UniversityofWashington.
+
+ZhejianZhou,JIayuWang,DahuaLin,andKaiChen. 2024.
+
+Scaling behavior for large language models Amit Arnold Levy and Mor Geva. 2024.
+
+Language regardingnumeralsystems:Anexampleusingpythia. modelsencodenumbersusingdigitrepresentations In Findings of the Association for Computational inbase10. arXivpreprintarXiv:2410.11781.
+
+Linguistics: EMNLP2024,pages3806-3820.
+
+Korbinian Moeller, Silvia Pixner, Liane Kaufmann, FangweiZhu,DamaiDai,andZhifangSui.2025.
+
+LanandHans-ChristophNuerk.2009.
+
+Children’searly guagemodelsencodethevalueofnumberslinearly. mental number line: Logarithmic or decomposed InProceedingsofthe31stInternationalConference linear?
+
+Journal of experimental child psychology, onComputationalLinguistics,pages693-709. 103(4):503-515.
+
+A Experimentaldetails AllexperimentswereperformedusinganNVIDIA A6000GPUforacceleratedcomputation.
+
+ThemodelswereimplementedinPythonandimportedfrom HuggingfacewithPyTorch,andstandardlibraries likeNumPyandMatplotlibwereusedfordataprocessingandvisualization.
+
+Weevaluatedthefollowingmodels: Model Variants Ref.
+
+Pythia 2.8B (Touvronetal.,2023) LLaMA 2.7B,3.1-8B,3.2-1B (Touvronetal.,2023) GPT-2 Large-1.5B (Radfordetal.,2019) Mistral 7B (Jiang,2024) Table4: Modelsevaluatedintheexperiments.
+
+Wheneverpossible,resultswerereportedasthe averageofthreeruns,alongwiththestandarddeviation(std).
+
+Forexperimentswhererepeatedruns werenotfeasible,therandomseedwasfixedto42 toensurereproducibility.
+
+B Additionalexperiments B.1 Layer-wisePLSanalysis 0.8 0.6 0.4 0.2 0.00 5 10 15 20 25 30 35 Layer , VE GPT2-L Left Y-axis 2 Right Y-axis 1 2 . . 7 0 5 0 0.8 1.50 1.25 0.6 1.00 0.75 0.4 0.50 0.25 0.2 0.00 0 5 10 15 20 25 30 Layer , VE Llama-2.7B Left Y-axis 2 Right Y-axis 1.2 1.0 0.8 0.6 0.4 0.8 0.6 0.4 0.2 0 5 10 15 20 25 30 Layer , VE Pythia-2.8B Left Y-axis 2 Right Y-axis 1.0 0.8 0.8 0.6 0.6 0.4 0.4 0.2 0.2 0.0 0 5 10 15 20 25 30 Layer , VE 0.050 0.025 0.000 0.025 0.050 0 500 1000 Sample Index Mistral-7B Left Y-axis 2 Right Y-axis 1.0 0.8 0.6 0.4 0.2 0.0 Figure8: Layer-wiseanalysisoffourmodelsonletters groups,showingexplainedvariance(σ2),monotonicity (ρ),andScalingRateIndex(β).
+
+B.2 Birthyearandpopulationdatasets projectionsinalllayers 1 tnenopmoC Layer 0 0 500 1000 Sample Index 1 tnenopmoC Layer 1 0 500 1000 Sample Index 1 tnenopmoC Layer 2 0 500 1000 Sample Index 1 tnenopmoC Layer 3 0 500 1000 Sample Index 1 tnenopmoC Layer 4 50 25 0 500 1000 Sample Index 1 tnenopmoC Layer 5 0 500 1000 Sample Index tnenopmoC Layer 6 0 500 1000 Sample Index tnenopmoC Layer 7 0 500 1000 Sample Index tnenopmoC Layer 8 0 500 1000 Sample Index tnenopmoC Layer 9 0 500 1000 Sample Index tnenopmoC Layer 10 0 500 1000 Sample Index tnenopmoC Layer 11 0 500 1000 Sample Index tnenopmoC Layer 12 0 500 1000 Sample Index tnenopmoC Layer 13 0 500 1000 Sample Index tnenopmoC Layer 14 40 20 0 500 1000 Sample Index 1 tnenopmoC Layer 15 20 0 60 0 500 1000 Sample Index 1 tnenopmoC Layer 16 40 20 400 500 1000 Sample Index 1 tnenopmoC Layer 17 20 0 500 1000 Sample Index tnenopmoC Layer 18 20 0 500 1000 Sample Index tnenopmoC Layer 19 20 0 500 1000 Sample Index tnenopmoC Layer 20 20 40 0 500 1000 Sample Index tnenopmoC Layer 21 40 0 20 0 500 1000 Sample Index tnenopmoC Layer 22 40 0 20 0 500 1000 Sample Index tnenopmoC Layer 23 0 500 1000 Sample Index tnenopmoC Layer 24 0 500 1000 Sample Index tnenopmoC Layer 25 0 500 1000 Sample Index tnenopmoC Layer 26 0 500 1000 Sample Index tnenopmoC Layer 27 0 500 1000 Sample Index tnenopmoC Layer 28 0 500 1000 Sample Index tnenopmoC Layer 29 0 500 1000 Sample Index 1 tnenopmoC Layer 30 400 500 1000 Sample Index 1 tnenopmoC 1400 1200 Layer 31 htriB 1400 1200 htriB 1400 1200 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB htriB htriB htriB 1400 1200 htriB 1400 1200 htriB 1400 1200 htriB 1400 1200 htriB 1400 1200 htriB 1400 1200 htriB htriB htriB htriB htriB htriB Figure9: OnecomponentPLSmodeltrainedonLlama- 3.1-8B instruct model activations to predict entities’ birthyear. 0.050 0.025 0.000 0.025 0.050 0.05 0.00 0.05 Component 1 2 tnenopmoC Layer 0 50 25 50 0 Component 1 2 tnenopmoC Layer 1 50 0 Component 1 2 tnenopmoC Layer 2 50 25 50 0 50 100 Component 1 2 tnenopmoC Layer 3 40 20 40 0 50 Component 1 2 tnenopmoC Layer 4 50 25 0 50 Component 1 2 tnenopmoC Layer 5 25 0 50 0 Component 1 2 tnenopmoC Layer 6 50 0 Component 1 2 tnenopmoC Layer 7 25 0 50 0 Component 1 2 tnenopmoC Layer 8 25 0 0 50 Component 1 2 tnenopmoC Layer 9 25 0 25 50 0 50 Component 1 2 tnenopmoC Layer 10 25 0 25 50 0 50 Component 1 2 tnenopmoC Layer 11 0 50 Component 1 2 tnenopmoC Layer 12 50 0 Component 1 2 tnenopmoC Layer 13 50 0 Component 1 2 tnenopmoC Layer 14 25 0 0 50 Component 1 2 tnenopmoC Layer 15 50 25 50 0 Component 1 2 tnenopmoC Layer 16 40 20 0 50 Component 1 2 tnenopmoC Layer 17 0 50 Component 1 tnenopmoC Layer 18 0 50 Component 1 tnenopmoC Layer 19 25 0 25 Component 1 tnenopmoC Layer 20 25 0 25 Component 1 tnenopmoC Layer 21 25 0 25 Component 1 tnenopmoC Layer 22 25 0 25 Component 1 tnenopmoC Layer 23 25 0 25 Component 1 tnenopmoC Layer 24 25 0 25 Component 1 tnenopmoC Layer 25 25 0 25 Component 1 tnenopmoC Layer 26 25 0 25 Component 1 tnenopmoC Layer 27 25 0 25 Component 1 tnenopmoC Layer 28 25 0 25 Component 1 tnenopmoC Layer 29 25 0 25 Component 1 tnenopmoC Layer 30 25 0 25 Component 1 tnenopmoC 1800 1600 Layer 31 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 1400 htriB 1800 1600 1400 htriB 1800 1600 1400 htriB htriB htriB htriB 1800 1600 htriB 1800 1600 htriB 1800 1600 htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB Figure 10: Two components PLS model trained on Llama-3.1-8Binstructmodelactivationstopredictentities’birthyear. 0.050 0.025 0.000 0.025 0.050 0 500 1000 Sample Index 1 tnenopmoC Layer 0 0 500 1000 Sample Index 1 tnenopmoC Layer 1 0 500 1000 Sample Index 1 tnenopmoC Layer 2 0 500 1000 Sample Index tnenopmoC Layer 3 0 500 1000 Sample Index tnenopmoC Layer 4 0 500 1000 Sample Index tnenopmoC Layer 5 0 500 1000 Sample Index tnenopmoC Layer 6 0 500 1000 Sample Index tnenopmoC Layer 7 0 500 1000 Sample Index tnenopmoC Layer 8 0 500 1000 Sample Index tnenopmoC Layer 9 0 500 1000 Sample Index tnenopmoC Layer 10 0 500 1000 Sample Index tnenopmoC Layer 11 0 500 1000 Sample Index tnenopmoC Layer 12 0 500 1000 Sample Index tnenopmoC Layer 13 0 500 1000 Sample Index tnenopmoC Layer 14 0 500 1000 Sample Index tnenopmoC Layer 15 htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB Figure11: OnecomponentPLSmodeltrainedonLlama-3.2-1Binstructmodelactivationstopredictentities’birth year. 0.050 0.025 0.000 0.025 0.050 0.05 0.00 0.05 Component 1 tnenopmoC Layer 0 50 0 Component 1 tnenopmoC Layer 1 0 50 Component 1 tnenopmoC Layer 2 0 50 Component 1 tnenopmoC Layer 3 50 0 Component 1 tnenopmoC Layer 4 50 0 Component 1 tnenopmoC Layer 5 50 0 Component 1 tnenopmoC Layer 6 0 50 Component 1 tnenopmoC Layer 7 50 0 Component 1 tnenopmoC Layer 8 0 50 Component 1 tnenopmoC Layer 9 50 0 Component 1 tnenopmoC Layer 10 0 50 Component 1 tnenopmoC Layer 11 0 50 Component 1 tnenopmoC Layer 12 0 50 Component 1 tnenopmoC Layer 13 0 50 Component 1 tnenopmoC Layer 14 0 50 Component 1 tnenopmoC Layer 15 htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB htriB Figure12: TwocomponentsPLSmodeltrainedonLlama-3.2-1Binstructmodelactivationstopredictentities’birth year. 0.050 0.025 0.000 0.025 0.050 0 500 1000 Sample Index 1 tnenopmoC Layer 0 0 500 1000 Sample Index 1 tnenopmoC Layer 1 0 500 1000 Sample Index 1 tnenopmoC Layer 2 0 500 1000 Sample Index 1 tnenopmoC Layer 3 0 500 1000 Sample Index 1 tnenopmoC Layer 4 100 0 500 1000 Sample Index 1 tnenopmoC Layer 5 0 500 1000 Sample Index 1 tnenopmoC Layer 6 100 50 0 500 1000 Sample Index 1 tnenopmoC Layer 7 100 50 0 500 1000 Sample Index 1 tnenopmoC Layer 8 100 50 0 500 1000 Sample Index 1 tnenopmoC Layer 9 0 500 1000 Sample Index 1 tnenopmoC Layer 10 100 50 0 500 1000 Sample Index 1 tnenopmoC Layer 11 0 500 1000 Sample Index 1 tnenopmoC Layer 12 0 500 1000 Sample Index 1 tnenopmoC Layer 13 0 500 1000 Sample Index 1 tnenopmoC Layer 14 0 500 1000 Sample Index 1 tnenopmoC Layer 15 0 500 1000 Sample Index 1 tnenopmoC Layer 16 0 500 1000 Sample Index 1 tnenopmoC Layer 17 0 500 1000 Sample Index 1 tnenopmoC Layer 18 0 500 1000 Sample Index 1 tnenopmoC Layer 19 25 0 0 500 1000 Sample Index 1 tnenopmoC Layer 20 0 500 1000 Sample Index 1 tnenopmoC Layer 21 0 500 1000 Sample Index 1 tnenopmoC Layer 22 0 500 1000 Sample Index 1 tnenopmoC Layer 23 50 25 0 500 1000 Sample Index 1 tnenopmoC Layer 24 50 25 0 500 1000 Sample Index 1 tnenopmoC Layer 25 50 25 0 500 1000 Sample Index 1 tnenopmoC Layer 26 20 0 500 1000 Sample Index 1 tnenopmoC Layer 27 20 0 500 1000 Sample Index 1 tnenopmoC Layer 28 20 0 500 1000 Sample Index 1 tnenopmoC Layer 29 0 500 1000 Sample Index 1 tnenopmoC Layer 30 60 0 500 1000 Sample Index 1 tnenopmoC 108 107 Layer 31 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 noitalupoP 108 107 106 noitalupoP 108 107 106 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 0.050 0.025 0.000 0.025 0.050 0.05 0.00 0.05 Component 1 Figure 13: One component PLS model trained on Llama-3.1-8Binstructmodelactivationstopredictentities’populationsize. 2 tnenopmoC Layer 0 25 0 50 0 50 Component 1 2 tnenopmoC Layer 1 0 50 Component 1 2 tnenopmoC Layer 2 25 0 25 50 50 0 Component 1 2 tnenopmoC Layer 3 50 25 0 25 50 50 0 Component 1 2 tnenopmoC Layer 4 50 25 0 25 100 0 Component 1 2 tnenopmoC Layer 5 75 50 25 100 0 Component 1 2 tnenopmoC Layer 6 0 50 100 Component 1 2 tnenopmoC Layer 7 100 50 0 100 Component 1 2 tnenopmoC Layer 8 0 100 Component 1 2 tnenopmoC Layer 9 100 50 100 0 Component 1 2 tnenopmoC Layer 10 100 50 0 100 Component 1 2 tnenopmoC Layer 11 100 50 0 Component 1 2 tnenopmoC Layer 12 0 50 100 Component 1 2 tnenopmoC Layer 13 100 50 0 Component 1 2 tnenopmoC Layer 14 0 50 Component 1 2 tnenopmoC Layer 15 0 50 Component 1 2 tnenopmoC Layer 16 0 50 Component 1 2 tnenopmoC Layer 17 0 50 Component 1 2 tnenopmoC Layer 18 0 50 Component 1 2 tnenopmoC Layer 19 50 0 Component 1 2 tnenopmoC Layer 20 0 50 Component 1 2 tnenopmoC Layer 21 0 50 Component 1 2 tnenopmoC Layer 22 0 50 Component 1 2 tnenopmoC Layer 23 0 25 0 50 Component 1 2 tnenopmoC Layer 24 0 25 0 50 Component 1 2 tnenopmoC Layer 25 0 25 0 50 Component 1 2 tnenopmoC Layer 26 75 0 50 Component 1 2 tnenopmoC Layer 27 75 0 50 Component 1 2 tnenopmoC Layer 28 75 0 50 Component 1 2 tnenopmoC Layer 29 0 50 Component 1 2 tnenopmoC Layer 30 20 0 50 Component 1 2 tnenopmoC 108 107 Layer 31 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 106 105 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 106 noitalupoP 108 107 106 noitalupoP 108 107 106 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP 108 107 noitalupoP Figure 14: Two components PLS model trained on Llama-3.1-8Binstructmodelactivationstopredictentities’populationsize. 0.050 0.025 0.000 0.025 0.050 0 500 1000 Sample Index tnenopmoC Layer 0 0 500 1000 Sample Index tnenopmoC Layer 1 0 500 1000 Sample Index tnenopmoC Layer 2 0 500 1000 Sample Index tnenopmoC Layer 3 0 500 1000 Sample Index tnenopmoC Layer 4 0 500 1000 Sample Index tnenopmoC Layer 5 0 500 1000 Sample Index tnenopmoC Layer 6 0 500 1000 Sample Index tnenopmoC Layer 7 0 500 1000 Sample Index tnenopmoC Layer 8 0 500 1000 Sample Index 1 tnenopmoC Layer 9 0 500 1000 Sample Index 1 tnenopmoC Layer 10 0 500 1000 Sample Index 1 tnenopmoC Layer 11 0 500 1000 Sample Index tnenopmoC Layer 12 0 500 1000 Sample Index tnenopmoC Layer 13 0 500 1000 Sample Index tnenopmoC Layer 14 0 500 1000 Sample Index tnenopmoC Layer 15 noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP Figure 15: One component PLS model trained on Llama-3.2-1B instruct model activations to predict entities’ populationsize. 0.050 0.025 0.000 0.025 0.050 0.05 0.00 0.05 Component 1 tnenopmoC Layer 0 25 0 25 Component 1 tnenopmoC Layer 1 0 50 Component 1 tnenopmoC Layer 2 0 50 Component 1 tnenopmoC Layer 3 0 50 Component 1 tnenopmoC Layer 4 50 0 Component 1 tnenopmoC Layer 5 50 0 Component 1 tnenopmoC Layer 6 50 0 Component 1 tnenopmoC Layer 7 50 0 Component 1 tnenopmoC Layer 8 50 0 Component 1 2 tnenopmoC Layer 9 50 0 Component 1 2 tnenopmoC Layer 10 50 0 Component 1 2 tnenopmoC Layer 11 50 0 Component 1 tnenopmoC Layer 12 50 0 Component 1 tnenopmoC Layer 13 0 50 Component 1 tnenopmoC Layer 14 50 0 Component 1 tnenopmoC Layer 15 noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP noitalupoP Figure 16: Two component PLS model trained on Llama-3.2-1B instruct model activations to predict entities’ populationsize.

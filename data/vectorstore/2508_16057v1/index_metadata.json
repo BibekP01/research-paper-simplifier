@@ -1,0 +1,136 @@
+{
+  "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "similarity_metric": "cosine",
+  "num_vectors": 8,
+  "metadata": [
+    {
+      "chunk_id": "2508_chunk_0",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025. Cite as: Yang S, Lei B, Biljecki F (2025): Urban Comfort Assessment in the Era of Digital Planning: A Multidimensional, Data-driven, and AI-assisted Framework. In: 19th International Conference on Computational Urban Planning and Urban Management (CUPUM 2025), London, UK. Urban Comfort Assessment in the Era of Digital Planning: A Multidimensional, Data-driven, and AI-assisted Framework Sijie Yang1,2, Binyu Lei1 and Filip Biljecki\u22171,3 1Department of Architecture, National University of Singapore 2School of Engineering and Applied Science, University of Pennsylvania 3Department of Real Estate, National University of Singapore Summary Ensuring liveability and comfort is one of the fundamental objectives of urban planning. Numerous studies have employed computational methods to assess and quantify factors related to urban comfort such as greenery coverage, thermal comfort, and walkability. However, a clear definition of urban comfort and its comprehensive evaluation framework remain elusive. Our research explores the theoretical interpretations and methodologies for assessing urban comfort within digital planning, emphasising three key dimensions: multidimensional analysis, data support, and AI assistance. KEYWORDS: urban planning, street view imagery, streetscape, human-centred GeoAI, AI agent 1 The Multidimensional Nature of Urban Comfort Comfort is defined as the degree of satisfaction with the environment of a person (Frontczak et al., 2012; Shin, 2016). In the built environment, there are many environmental factors that have been proven to be associated with human comfort sensation, including visual elements (Klemm et al., 2015; Liu et al., 2023; Yang et al., 2025), physiological data of individuals (Chwalek et al., 2024), occupant behaviour (Miller et al., 2025), meteorological indicators (Xie et al., 2019; Miller et al., 2023; Mosteiro-Romero et al., 2024), the design of public places (Santos Nouri et al., 2018), the dynamics of life quality (Lei et al., 2025) and so on. Urban comfort, in this context, refers specifically to the experience of comfort within the urban environment. It is inherently a multidimensional concept due to the complexity and variability of the urban physical environment. Unlike general comfort, which can be defined at the individual level, urban comfort emerges as a collective and spatially embedded phenomenon, shaped by the interplay between environmental attributes and human perception.",
+      "chunk_index": 0,
+      "word_count": 361,
+      "token_count": 469,
+      "metadata": {
+        "start_char": 0,
+        "end_char": 2630,
+        "has_overlap": false,
+        "sentence_count": 12
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_1",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "Unlike general comfort, which can be defined at the individual level, urban comfort emerges as a collective and spatially embedded phenomenon, shaped by the interplay between environmental attributes and human perception. The diverse components of the urban environment evoke a wide range of perceptions in individuals (Salesses et al., 2013; Dubey et al., 2016; Qiu et al., 2023; Yang et al., 2023; Ito et al., 2024), making it unsuitable for reduction into a single numerical index or one-dimensional measure, as it is often the case with other concepts in planning such as walkability. In addition, \u2217filip@nus.edu.sg guA ]IA.sc[ 1v75061.8052:viXra comfort is highly subjective, varying significantly from person to person based on their preferences, experiences, and expectations (Castaldo et al., 2018; Wang et al., 2018), which adds another layer of complexity to the understanding of urban comfort. Figure 1: Proposed multidimensional framework of urban comfort. Broadly, urban comfort can be categorised into two main dimensions: environmental comfort and social comfort, as described in Figure 1. Environmental comfort primarily refers to the perceptual and experiential satisfaction of people with the physical aspects of the built environment, such as thermal comfort (Rupp et al., 2015), visual comfort (Lam et al., 2020), and acoustic comfort (Yang and Kang, 2005). In contrast, social comfort relates to how well the urban environment supports human interactions and behavioural needs. It emphasizes the functional ability of spaces to facilitate desired user activities, such as walkability, accessibility, and safety. Examples include walkingcomfort(Maetal.,2021)andcyclingcomfort(Ayachietal.,2015), whichreflecthowurban infrastructure influences ease of movement and user experience. Urbancomfortisdeeplyintertwinedwiththecharacteristicsoftheurbanenvironment(Guly \u0301asetal., 2006). People experience different levels of comfort in heterogeneous urban settings (Kim et al., 2022), and even within the same environment, individuals may perceive comfort differently across various dimensions (Du et al., 2023). This dual-layer relationship indicates that urban comfort is not only context-dependent but also multidimensional. Instead of considering urban comfort as a single scalar value, it is more accurate to conceptualise it as a vector U that captures the C multidimensional nature of urban comfort across several dimensions. Mathematically, this can be expressed as U = [D ,D ,...,D ], where: C 1 2 n \u2022 D represents each dimension of urban comfort (e.g., thermal comfort, visual comfort). i \u2022 U is the vector of all the dimensions of comfort, reflecting the multidimensional aspects of C urban comfort without reducing them to a single aggregate value.",
+      "chunk_index": 1,
+      "word_count": 392,
+      "token_count": 509,
+      "metadata": {
+        "start_char": 2409,
+        "end_char": 5179,
+        "has_overlap": true,
+        "sentence_count": 15
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_2",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "i \u2022 U is the vector of all the dimensions of comfort, reflecting the multidimensional aspects of C urban comfort without reducing them to a single aggregate value. Our vector-based approach acknowledges that different dimensions of urban comfort can interact witheachother,contributingdifferentlytotheperceptionofcomfortdependingontheurbancontext and individual preferences. The complexity of assessing urban comfort lies in understanding how thesedimensionscoexistandinfluenceeachother, ratherthansimplyaggregatingthemintoasingle index. This perspective reinforces the need for a comprehensive evaluation framework that captures the nuanced and multidimensional experiences of individuals within urban environments. Inthisstudy, weclarifiedthemulti-dimensionalnatureofurbancomfortanditsmathexpressionby definition. In the following sections, we further propose the four steps of urban comfort assessment and the role of AI algorithms in modelling urban comfort for digital planning, as shown in Figure Figure 2: Urban comfort assessment framework in this study. 2 Four-Step Framework for Data-Driven Urban Comfort Assessment To effectively evaluate urban comfort in its multidimensional attributes, we propose a structured, data-driven assessment framework encompassing four key steps: conducting comfort surveys, developing comfort models, scaling up urban comfort predictions, and performing regional validation, as illustrated in Figure 3. Each step is data-supported, leveraging three essential data streams: geospatial data to characterise the urban environment in the comfort survey, survey results to capture human comfort perception, and additional comfort survey data from distinct sites for model validation. As shown in Figure 3, the process begins with a comfort survey conducted at a specified urban location, recording geospatial characteristics (X ...X ) and various comfort dimensions (D ...D ). 1 n 1 n Subsequently,thecollectedgeospatialandcomfortdataundergomodellingtocapturethenon-linear relationship between the urban environment and human comfort. This model enables scaling up predictions to more urban areas across the city based on extended geospatial data, facilitating an Figure 3: Data-driven urban comfort assessment framework. urban-scale comfort assessment. Finally, the comfort model is validated using survey data from an additional, designated validation location. 3 AI-assisted Comfort Modelling in the Era of Digital Planning Data-driven, multidimensional urban comfort modelling can be further enhanced by artificial intelligence to support digital planning more effectively (Figure 4). AI models offer significant advantages, includinghigh-dimensionaldatarepresentation, non-linearrelationshipmodelling, scalability, generalisability, and spatial-temporal understanding, making them better suited than traditional methods for tackling the complexities of comfort modelling. For instance, convolutional neural network (CNN) excels in feature extraction from image data and are widely used in processing satellite and street view imagery (SVI) as data representation tools.",
+      "chunk_index": 2,
+      "word_count": 382,
+      "token_count": 496,
+      "metadata": {
+        "start_char": 5016,
+        "end_char": 8126,
+        "has_overlap": true,
+        "sentence_count": 16
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_3",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "For instance, convolutional neural network (CNN) excels in feature extraction from image data and are widely used in processing satellite and street view imagery (SVI) as data representation tools. Advanced AI models, such as deep neural network (DNN), demonstrate robust predictive performance with non-linear problems like human comfort and possess strong scalability and generalisation, enabling application to untrained data. Comfort models developed for one urban area can be extended to predict comfort in other regions. Additionally, long-short-term memory network (LSTM) is well-suited for time-series data, makingthemvaluableforhandlinglargevolumesoftemporally-labelledgeographicdataindynamic urban observations. These AI technologies, when integrated, can significantly enhance comfort modelling and mapping within our data-supported urban comfort assessment framework, offering powerful tools for digital urban planning. As depicted in Figure 4, typical applications include identifying areas with low comfortforprioritisationinurbanrenewal,highlightingcriticalurbanenvironmentalelementsneeding quality improvement, and conducting continuous geospatial analyses based on spatial-temporal Figure 4: AI-assisted comfort modelling features for digital planning. analytics to inform urban planning decisions (Yap et al., 2023; Liang et al., 2023; Yang et al., 2025). 4 Case Study: Thermal Comfort Analytics in Singapore Figure 5: Urban comfort assessment framework in the case study. Toimplementourproposedfour-step, AI-assistedurbancomfortassessmentframework, weselected Singapore as the study area for a focused analysis of urban thermal comfort, given its strong emphasis on urban liveability and resilience in a high-density, tropical environment. As illustrated in Figure 5, this case study adheres rigorously to the framework\u2019s stages: conducting a comfort survey, developing comfort models, scaling up urban comfort predictions, and performing in-field validation. Figure 6: SVI-supported visual assessment as a replacement for in-field comfort survey. In the comfort survey phase, we opted for a more efficient online approach using street view images instead of the traditional in-field survey combined with in-field validation, as shown in Figure 6. This method leverages information embedded in street view images and utilises AI-based CNN feature extraction to replace in-field surveys that typically require extensive environmental measurements, participant involvement, and significant human and financial resources. Nonetheless, for model validation, we still conducted a field comfort survey to confirm the model\u2019s reliability. Forcomfortmodelling,wedevelopedtwotypesofmodels: acomfortpredictionmodelandacomfort inference model (Figure 5). The prediction model employs a DNN to achieve high accuracy and generalisation capabilities, enabling us to apply it to 92,233 street view images across Singapore to predict thermal comfort levels along urban streets. The inference model, based on linear regression, interprets feature weights, allowing us to identify which factors significantly influence urban thermalcomfort.",
+      "chunk_index": 3,
+      "word_count": 394,
+      "token_count": 512,
+      "metadata": {
+        "start_char": 7929,
+        "end_char": 11070,
+        "has_overlap": true,
+        "sentence_count": 17
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_4",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "The inference model, based on linear regression, interprets feature weights, allowing us to identify which factors significantly influence urban thermalcomfort. Finally, wemappedSingapore\u2019surbanthermalcomfort(Figure7), clearlyidentifying spatial areas with higher and lower comfort levels. As an addition, this mapping can provide valuable insights for urban planners to pinpoint zones requiring efforts to enhance street-level thermal comfort. 5 Contributions and Limitations This paper establishes a multidimensional framework for understanding urban comfort, introducing four key steps for assessing urban comfort. Additionally, it examines the supportive role of AI in urban comfort modelling within the context of digital urban planning. In the case study, we apply this framework to assess urban-scale thermal comfort in Singapore, utilising CNN, DNN, and other advanced technologies for thermal comfort modelling. The resulting urban thermal comfort map of Singapore represents a valuable resource for digital urban planning efforts. However, this study has several limitations. First, considering the notion of data sources, we incorporate three key modelling methods in this framework to support the objective. However, this approach does not fully account for the diverse auxiliary roles that various AI technologies could play in urban comfort modelling, depending on specific use cases. Future research could explore how different AI techniques-such as reinforcement learning, generative models, or multiagent systems-can further enhance urban comfort assessment and digital planning. Second, the Figure 7: Comfort mapping for thermal comfort analytics in Singapore. case study focuses solely on thermal comfort as a one-dimensional aspect of urban comfort, without extendingtothemultidimensionalcomfortmodelproposedintheframework. Futurestudiesshould consider developing and validating a multidimensional comfort model to substantiate the reliability of this conceptual framework for urban comfort assessment. Acknowledgements We thank our colleagues at the NUS Urban Analytics Lab for the discussions. This research is supported by NUS Research Scholarship (NUSGS-CDE DO IS AY22&L GRSUR0600042). This research is part of the projects (1) Multi-scale Digital Twins for the Urban Environment: From HeartbeatstoCities,whichissupportedbytheSingaporeMinistryofEducationAcademicResearch Fund Tier 1; (2) Large-scale 3D Geospatial Data for Urban Analytics, which is supported by the National University of Singapore under the Start Up Grant R-295-000-171-133; (3) From Models to Pavements: Advancing Urban Digital Twins with a Multi-Dimensional Human-Centric Approach for a Smart Walkability Analysis, which is supported by the Humanities Social Sciences Seed Fund at the National University of Singapore (A-8001957-00-00). References Ayachi, F., Dorey, J., and Guastavino, C. (2015). Identifying factors of bicycle comfort: An online survey with enthusiast cyclists. Applied ergonomics, 46:124-136.",
+      "chunk_index": 4,
+      "word_count": 392,
+      "token_count": 509,
+      "metadata": {
+        "start_char": 10910,
+        "end_char": 13916,
+        "has_overlap": true,
+        "sentence_count": 20
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_5",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "References Ayachi, F., Dorey, J., and Guastavino, C. (2015). Identifying factors of bicycle comfort: An online survey with enthusiast cyclists. Applied ergonomics, 46:124-136. Castaldo, V.\n\nL., Pigliautile, I., Rosso, F., Cotana, F., De Giorgio, F., and Pisello, A.\n\nL. (2018). How subjective and non-physical parameters affect occupants\u2019 environmental comfort perception. Energy and Buildings, 178:107-129. Chwalek, P., Zhong, S., Perry, N., Liu, T., Miller, C., Alavi, H.\n\nS., Lalanne, D., and Paradiso, J. A. (2024). A dataset exploring urban comfort through novel wearables and environmental surveys. Scientific data, 11(1):1423. Du, M., Hong, B., Gu, C., Li, Y., and Wang, Y. (2023). Multiple effects of visual-acoustic-thermal perceptions on the overall comfort of elderly adults in residential outdoor environments. Energy and Buildings, 283:112813. Dubey, A., Naik, N., Parikh, D., Raskar, R., and Hidalgo, C.\n\nA. (2016). Deep learning the city: Quantifying urban perception at a global scale. In Computer Vision-ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11-14, 2016, Proceedings, Part I 14, pages 196-212. Springer. Frontczak, M., Schiavon, S., Goins, J., Arens, E., Zhang, H., and Wargocki, P. (2012). Quantitative relationships between occupant satisfaction and satisfaction aspects of indoor environmental quality and building design. Indoor air, 22(2):119-131. Guly \u0301as, A \u0301., Unger, J., and Matzarakis, A. (2006). Assessment of the microclimatic and human comfort conditions in a complex urban environment: modelling and measurements. Building and Environment, 41(12):1713-1722. Ito, K., Kang, Y., Zhang, Y., Zhang, F., and Biljecki, F. (2024). Understanding urban perception with visual data: A systematic review. Cities, 152:105169. Kim, Y., Yu, S., Li, D., Gatson, S.\n\nN., and Brown, R.\n\nD. (2022). Linking landscape spatial heterogeneity to urban heat island and outdoor human thermal comfort in tokyo: Application of the outdoor thermal comfort index. Sustainable Cities and Society, 87:104262. Klemm, W., Heusinkveld, B.\n\nG., Lenzholzer, S., and van Hove, B. (2015). Street greenery and its physicalandpsychologicalimpactonthermalcomfort. Landscape and urban planning, 138:87-98. Lam, C.\n\nK.\n\nC., Yang, H., Yang, X., Liu, J., Ou, C., Cui, S., Kong, X., and Hang, J. (2020). Crossmodal effects of thermal and visual conditions on outdoor thermal and visual comfort perception. Building and Environment, 186:107297. Lei, B., Liu, P., Liang, X., Yan, Y., and Biljecki, F. (2025). Developing the urban comfort index: Advancing liveability analytics with a multidimensional approach and explainable artificial intelligence. Sustainable Cities and Society, page 106121. Liang, X., Zhao, T., and Biljecki, F. (2023). Revealing spatio-temporal evolution of urban visual environments with street view imagery. Landscape and Urban Planning, 237:104802.",
+      "chunk_index": 5,
+      "word_count": 408,
+      "token_count": 530,
+      "metadata": {
+        "start_char": 13741,
+        "end_char": 16634,
+        "has_overlap": true,
+        "sentence_count": 47
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_6",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "Sustainable Cities and Society, page 106121. Liang, X., Zhao, T., and Biljecki, F. (2023). Revealing spatio-temporal evolution of urban visual environments with street view imagery. Landscape and Urban Planning, 237:104802. Liu, P., Zhao, T., Luo, J., Lei, B., Frei, M., Miller, C., and Biljecki, F. (2023). Towards humancentric digital twins: leveraging computer vision and graph models to predict outdoor comfort. Sustainable Cities and Society, 93:104480. Ma, X., Chau, C.\n\nK., and Lai, J.\n\nH.\n\nK. (2021). Critical factors influencing the comfort evaluation for recreational walking in urban street environments. Cities, 116:103286. Miller, C., Chua, Y.\n\nX., Quintana, M., Lei, B., Biljecki, F., and Frei, M. (2025). Make yourself comfortable: Nudging urban heat and noise mitigation with smartwatch-based just-in-time adaptive interventions (jitai). arXiv preprint arXiv:2501.09530. Miller, C., Quintana, M., Frei, M., Chua, Y.\n\nX., Fu, C., Picchetti, B., Yap, W., Chong, A., and Biljecki, F. (2023). Introducing the cool, quiet city competition: Predicting smartwatch-reported heatandnoisewithdigitaltwinmetrics. InProceedingsofthe10thACMInternationalConference on Systems for Energy-Efficient Buildings, Cities, and Transportation, pages 298-299. Mosteiro-Romero, M., Park, Y., and Miller, C. (2024). People in cities: Combining subjective occupant feedback with urban-scale data to support indoor and outdoor thermal comfort. In The 5th Asia Conference of International Building Performance Simulation Association 2024. Qiu,W.,Li,W.,Liu,X.,Zhang,Z.,Li,X.,andHuang,X.(2023). Subjectiveandobjectivemeasures of streetscape perceptions: Relationships with property value in shanghai. Cities, 132:104037. Rupp, R.\n\nF., V \u0301asquez, N.\n\nG., and Lamberts, R. (2015). A review of human thermal comfort in the built environment. Energy and buildings, 105:178-205. Salesses,P.,Schechtner,K.,andHidalgo,C.A.(2013). Thecollaborativeimageofthecity: mapping the inequality of urban perception. PloS one, 8(7):e68400. Santos Nouri, A., Costa, J.\n\nP., Santamouris, M., and Matzarakis, A. (2018). Approaches to outdoor thermal comfort thresholds through public space design: A review. Atmosphere, 9(3):108. Shin, J.-h. (2016). Toward a theory of environmental satisfaction and human comfort: A processoriented and contextually sensitive theoretical framework. Journal of Environmental Psychology, 45:11-21. Wang, J., Wang, Z., de Dear, R., Luo, M., Ghahramani, A., and Lin, B. (2018). The uncertainty of subjective thermal comfort measurement. Energy and Buildings, 181:38-49. Xie, Y., Liu, J., Huang, T., Li, J., Niu, J., Mak, C.\n\nM., and Lee, T.-c. (2019). Outdoor thermal sensation and logistic regression analysis of comfort range of meteorological parameters in hong kong. Building and Environment, 155:175-186. Yang, S., Chong, A., Liu, P., and Biljecki, F. (2025). Thermal comfort in sight: Thermal affordance and its visual assessment for sustainable streetscape design. Building and Environment, page 112569. Yang, S., Krenz, K., Qiu, W., and Li, W. (2023).",
+      "chunk_index": 6,
+      "word_count": 403,
+      "token_count": 523,
+      "metadata": {
+        "start_char": 16411,
+        "end_char": 19465,
+        "has_overlap": true,
+        "sentence_count": 46
+      }
+    },
+    {
+      "chunk_id": "2508_chunk_7",
+      "paper_id": "2508",
+      "paper_title": "ThisistheAcceptedManuscriptversionofaconferencepaperpresentedat19thInternationalConferenceonComputational Urban Planning and Urban Management (CUPUM 2025) on Jun 24, 2025.",
+      "section": "Full Text",
+      "text": "Yang, S., Chong, A., Liu, P., and Biljecki, F. (2025). Thermal comfort in sight: Thermal affordance and its visual assessment for sustainable streetscape design. Building and Environment, page 112569. Yang, S., Krenz, K., Qiu, W., and Li, W. (2023). The role of subjective perceptions and objective measurements of the urban environment in explaining house prices in greater london: A multiscale urban morphology analysis. ISPRS International Journal of Geo-Information, 12(6):249. Yang, W. and Kang, J. (2005). Acoustic comfort evaluation in urban open public spaces. Applied acoustics, 66(2):211-229. Yap, W., Chang, J.-H., and Biljecki, F. (2023). Incorporating networks in semantic understanding of streetscapes: Contextualising active mobility decisions. Environment and Planning B: Urban Analytics and City Science, 50(6):1416-1437. Biographies Sijie Yang is a PhD researcher at the NUS Urban Analytics Lab. He holds a MSc in Space Syntax from University College London. He is also a computer science master\u2019s student at the School of Engineering and Applied Science, University of Pennsylvania. Binyu Lei is a PhD researcher at Urban Analytics Lab, Department of Architecture in the College of Design and Engineering at National University of Singapore. She holds a Master degree in Urban Planning from the University of Melbourne. Filip Biljecki is an assistant professor at the National University of Singapore and the founder of the NUS Urban Analytics Lab. He holds a MSc and PhD degree from the Delft University of Technology in the Netherlands.",
+      "chunk_index": 7,
+      "word_count": 233,
+      "token_count": 302,
+      "metadata": {
+        "start_char": 19216,
+        "end_char": 20773,
+        "has_overlap": true,
+        "sentence_count": 20
+      }
+    }
+  ]
+}
